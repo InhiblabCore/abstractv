@@ -1,0 +1,20 @@
+.n-button {
+  &.n-button--default-type {
+    &.n-button--ghost {
+      &:hover {
+        background-color: var(--datav-main-hover-color);
+      }
+
+      &:focus {
+        color: var(--datav-main-color);
+        background-color: transparent;
+
+        &:hover,
+        &:active {
+          color: #fff;
+          background-color: var(--datav-main-click-color);
+        }
+      }
+    }
+  }
+}

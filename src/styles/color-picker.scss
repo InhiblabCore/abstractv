@@ -1,0 +1,28 @@
+.n-color-picker {
+  background: var(--datav-gui-component-bgcolor);
+
+  .n-color-picker-trigger {
+    border-left-color: #0000;
+
+    .n-color-picker-trigger__value {
+      display: none;
+    }
+
+    &:hover {
+      border-color: var(--datav-main-color);
+    }
+  }
+}
+
+.n-color-picker-panel {
+  border: var(--datav-outline);
+}
+
+.g-color-picker {
+  width: 100%;
+
+  .g-color-picker__inner {
+    display: flex;
+    justify-content: space-between;
+  }
+}

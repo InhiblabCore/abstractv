@@ -1,0 +1,103 @@
+@import "mixins/util.scss";
+
+.g-field {
+  display: flex;
+  color: var(--datav-gui-font-color-1);
+}
+
+.g-field-title {
+  font-size: 12px;
+  height: 28px;
+  line-height: 28px;
+  font-weight: normal;
+
+  @include utils-ellipsis();
+}
+
+.g-field-title-with-description {
+  @extend .g-field-title;
+
+  cursor: help;
+  text-decoration: underline dotted;
+}
+
+.g-field-help {
+  padding: 0 3px;
+  color: var(--datav-gui-font-color-base);
+  font-size: 12px;
+  line-height: 28px;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--datav-main-hover-color);
+  }
+}
+
+.g-field-show-placeholder {
+  display: block;
+  width: 16px;
+  margin-right: 4px;
+  height: 28px;
+  line-height: 24px;
+
+  .g-field-show {
+    color: var(--datav-gui-font-color-base);
+    cursor: pointer;
+
+    &:hover {
+      color: var(--datav-main-hover-color);
+    }
+  }
+}
+
+.g-field-container {
+  width: 196px;
+  line-height: 28px;
+
+  &.--flat {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+}
+
+.g-field-wp {
+  display: flex;
+  padding: 4px 4px 4px 8px;
+
+  &:first-child {
+    padding-top: 16px;
+  }
+
+  &:last-child {
+    padding-bottom: 16px;
+  }
+
+  .g-field {
+    flex: 1;
+    padding-right: 5px;
+  }
+
+  &.--lv2 {
+    // margin-bottom: 4px;
+
+    .g-field {
+      color: var(--datav-gui-font-color-2);
+    }
+  }
+
+  &.--disable {
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.g-field-caption {
+  font-size: 12px;
+  color: var(--datav-gui-font-color-description);
+  height: 16px;
+  line-height: 16px;
+
+  @include utils-ellipsis();
+}

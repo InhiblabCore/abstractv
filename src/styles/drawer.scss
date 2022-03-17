@@ -1,0 +1,10 @@
+.n-drawer {
+  .n-drawer-content .n-drawer-header .n-drawer-header__close {
+    transition: 0.3s ease;
+
+    &:hover {
+      transform-origin: center;
+      transform: rotateZ(90deg);
+    }
+  }
+}

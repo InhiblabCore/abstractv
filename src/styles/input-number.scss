@@ -1,0 +1,36 @@
+.g-input-number {
+  width: 100%;
+}
+
+.n-input-number {
+  .n-input-wrapper {
+    padding-left: 8px;
+    padding-right: 0;
+  }
+
+  .n-input__suffix {
+    .n-button {
+      position: absolute;
+      top: calc(var(--n-font-size) + 2px);
+      right: 1px;
+      padding: 0 3px;
+      border-left: var(--datav-outline);
+      border-top: 1px solid #0000;
+      border-bottom: none;
+
+      &:nth-last-of-type(1) {
+        top: 1px;
+        border-top: none;
+        border-bottom: var(--datav-outline);
+      }
+
+      &:hover {
+        border-color: var(--datav-main-color);
+      }
+    }
+  }
+
+  .n-input-number-suffix {
+    margin-right: 24px;
+  }
+}

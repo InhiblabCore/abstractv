@@ -1,0 +1,107 @@
+.monaco-editor .margin-view-overlays .codicon-chevron-right,
+.monaco-editor .margin-view-overlays .codicon-chevron-down {
+  font-size: 100% !important;
+}
+
+.monaco-editor .suggest-widget {
+  /* TODO: 不生效 */
+  width: 200px;
+}
+
+.monaco-editor .monaco-editor-overlaymessage {
+  padding-bottom: 8px;
+}
+
+.monaco-editor .monaco-editor-overlaymessage.fadeIn {
+  animation: monaco-fade-in 150ms ease-out;
+}
+
+.monaco-editor .monaco-editor-overlaymessage.fadeOut {
+  animation: monaco-fade-out 100ms ease-out;
+}
+
+.monaco-editor .monaco-editor-overlaymessage .message {
+  padding: 1px 4px;
+}
+
+.monaco-editor .monaco-editor-overlaymessage .anchor {
+  width: 0 !important;
+  height: 0 !important;
+  border-color: transparent;
+  border-style: solid;
+  z-index: 1000;
+  border-width: 8px;
+  position: absolute;
+}
+
+@keyframes monaco-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes monaco-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.datav-editor {
+  position: relative;
+  height: 240px;
+  padding: 0;
+  overflow: hidden;
+  border: var(--datav-gui-editor-border);
+  background: var(--datav-component-bg-1);
+
+  .datav-editor-actions {
+    position: absolute;
+    right: 10px;
+    bottom: 5px;
+    z-index: 1;
+    width: 40px;
+    font-size: 12px;
+    text-align: right;
+
+    .action-btn {
+      width: 20px;
+      color: var(--datav-gui-editor-icon-color);
+      cursor: pointer;
+      transition: color 0.2s;
+
+      &:hover {
+        color: var(--datav-main-color);
+      }
+    }
+  }
+
+  &.--read-only {
+    .margin,
+    .monaco-editor-background {
+      background-color: var(--datav-gui-editor-bgcolor-disabled);
+    }
+  }
+}
+
+.datav-fullscreen-editor-dialog {
+  display: flex;
+  flex-direction: column;
+  max-width: 90%;
+  width: 90%;
+  height: 95vh;
+  background: var(--datav-gui-fullscreen-bgcolor);
+  margin-top: 1%;
+
+  .n-dialog__content {
+    height: 100%;
+    border-bottom: none;
+    padding-bottom: 10px;
+  }
+
+  .datav-fullscreen-editor-wp {
+    height: 100%;
+  }
+
+  .datav-fullscreen-editor {
+    width: 100%;
+    height: 100%;
+  }
+}

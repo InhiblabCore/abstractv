@@ -1,0 +1,109 @@
+.g-field-tabs {
+  &.n-tabs {
+    border-bottom: 1px solid var(--datav-gui-border-color);
+
+    .n-tabs-nav.n-tabs-nav--card-type {
+      border-bottom: 1px solid var(--datav-gui-border-color);
+
+      .n-tabs-wrapper {
+        background-color: var(--datav-gui-bgcolor-back);
+      }
+
+      .n-tabs-tab {
+        font-size: 12px;
+        color: var(--datav-gui-font-color-base);
+        height: 36px;
+        line-height: 36px;
+        padding: 0 15px;
+        user-select: none;
+
+        &::before {
+          content: "";
+          position: absolute;
+          display: inline-block;
+          bottom: 4px;
+          height: 4px;
+          width: 4px;
+          border-radius: 1px;
+          left: calc(50% - 4px);
+          background: var(--datav-main-color);
+          transition: opacity 0.2s;
+          opacity: 0;
+        }
+
+        &.n-tabs-tab--active {
+          color: var(--datav-main-color);
+          background-color: #0000;
+          border-color: #0000;
+
+          &::before {
+            opacity: 1;
+          }
+        }
+
+        &:hover {
+          color: var(--datav-gui-hover-color);
+        }
+      }
+    }
+
+    .n-tabs-nav-scroll-wrapper {
+      &.n-tabs-nav-scroll-wrapper--shadow-before::before {
+        box-shadow: inset 10px 0 8px -8px rgb(255 255 255 / 20%);
+      }
+
+      &.n-tabs-nav-scroll-wrapper--shadow-after::after {
+        box-shadow: inset -10px 0 8px -8px rgb(255 255 255 / 20%);
+      }
+    }
+
+    .n-tab-pane {
+      background: var(--datav-gui-bgcolor-back);
+    }
+  }
+
+  &.--column {
+    .g-field-tabs-column-item {
+      border-bottom: 1px solid var(--datav-gui-border-color);
+    }
+
+    .g-field-tabs-column-item-head {
+      font-size: 12px;
+      color: var(--datav-gui-font-color-2);
+      padding-left: 8px;
+      line-height: 16px;
+      cursor: pointer;
+      padding-top: 16px;
+      margin: 0;
+      margin-left: 20px;
+      position: relative;
+      display: inline-block;
+
+      &::before {
+        content: "";
+        position: absolute;
+        display: inline-block;
+        bottom: 8px;
+        left: -4px;
+        height: 4px;
+        width: 4px;
+        border-radius: 1px;
+        background: var(--datav-gui-primary-color);
+        transition: all 0.2s;
+        opacity: 0;
+      }
+
+      &.--selected {
+        color: var(--datav-gui-primary-color);
+
+        &::before {
+          opacity: 1;
+        }
+      }
+
+      &:hover {
+        color: var(--datav-gui-hover-color);
+      }
+    }
+  }
+}

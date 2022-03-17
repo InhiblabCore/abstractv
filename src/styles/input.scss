@@ -1,0 +1,53 @@
+@import "mixins/util";
+
+.g-input {
+  width: 100%;
+}
+
+.g-input__caption {
+  display: block;
+  width: 100%;
+  font-size: 12px;
+  height: 16px;
+  line-height: 16px;
+  color: var(--datav-gui-font-color-description);
+
+  @include utils-ellipsis();
+}
+
+.new-input {
+  height: 24px;
+  line-height: 24px;
+  display: inline-block;
+  background: var(--datav-gui-component-bgcolor);
+  vertical-align: middle;
+  padding: 0 8px;
+  color: var(--datav-font-color);
+  width: 100%;
+  caret-color: var(--datav-main-color);
+  box-sizing: border-box;
+  box-shadow: none;
+  margin: 0;
+  outline: 0;
+  border-radius: 0;
+  font-size: 12px;
+  border: var(--datav-outline);
+  transition: border 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+  &.is-disabled {
+    cursor: not-allowed;
+    color: var(--datav-font-color-disabled);
+    border: var(--datav-border-disabled);
+  }
+
+  &:focus,
+  &:hover {
+    border: var(--datav-border-primary);
+  }
+
+  &[type='number']::-webkit-outer-spin-button,
+  &[type='number']::-webkit-inner-spin-button {
+    appearance: none !important;
+    margin: 0;
+  }
+}

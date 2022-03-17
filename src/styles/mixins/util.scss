@@ -1,0 +1,20 @@
+@mixin utils-user-select($value) {
+  user-select: $value;
+}
+
+@mixin utils-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin utils-ellipsis-n($n: 2) {
+  .ellipsis#{$n} {
+    display: box;
+    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: $n;
+    -webkit-box-orient: vertical;
+  }
+}

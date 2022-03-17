@@ -1,0 +1,30 @@
+.n-slider {
+  .n-slider-rail {
+    .n-slider-rail__fill {
+      background: var(--datav-gui-slider-track-color);
+    }
+  }
+
+  .n-slider-handle {
+    border: 2px solid var(--datav-gui-primary-color);
+  }
+}
+
+.g-slider {
+  .g-slider-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 28px;
+  }
+
+  .n-slider {
+    width: 92px;
+    flex: 0 0 92px;
+  }
+
+  .n-input-number {
+    width: 92px;
+    margin-left: 4px;
+  }
+}

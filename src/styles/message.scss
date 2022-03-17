@@ -1,0 +1,26 @@
+.n-message {
+  min-width: 380px;
+  position: relative;
+
+  .n-message__content {
+    font-weight: 500;
+    padding-right: 16px;
+  }
+
+  &.n-message--error-type {
+    border: 1px solid var(--datav-red-color);
+  }
+
+  &.n-message--success-type {
+    border: 1px solid var(--datav-main-color);
+  }
+
+  &.n-message--warning-type {
+    border: 1px solid var(--datav-warn-color);
+  }
+
+  .n-message__close {
+    position: absolute;
+    right: 15px;
+  }
+}

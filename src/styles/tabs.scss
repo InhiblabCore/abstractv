@@ -1,0 +1,36 @@
+.n-tabs {
+  height: 100%;
+
+  .n-tabs-nav.n-tabs-nav--card-type {
+    .n-tabs-wrapper {
+      width: 100%;
+
+      .n-tabs-tab-wrapper {
+        flex-basis: calc(100% / var(--datav-gui-tabs-card-num));
+      }
+    }
+
+    .n-tabs-tab {
+      width: 100%;
+      justify-content: center;
+      height: 30px;
+      line-height: 30px;
+      border: 0;
+      border-top: 2px solid #0000;
+      border-radius: 0;
+      color: var(--datav-font-color);
+      background: var(--datav-nav-bg);
+
+      &.n-tabs-tab--active {
+        border: 0;
+        border-top: 2px solid var(--datav-main-color);
+        background: var(--datav-nav-bg-active);
+      }
+    }
+  }
+
+  .n-tab-pane {
+    height: 100%;
+    background: var(--datav-nav-bg-active);
+  }
+}
