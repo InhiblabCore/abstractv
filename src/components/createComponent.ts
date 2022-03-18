@@ -9,9 +9,9 @@ export default function createComponent(name: string) {
         hided: false,
         hovered: false,
         componentId: Math.floor(Math.random() * 100),
-      };
+      }
 
     default:
-      break;
+      break
   }
 }

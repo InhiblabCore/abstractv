@@ -19,9 +19,9 @@
 </template>
 
 <script lang="ts" setup>
-  import { IconBack } from '@/icons';
-  import ScreenTemplate from './ScreenTemplate.vue';
-  const loading = ref(false);
+  import { IconBack } from '@/icons'
+  import ScreenTemplate from './ScreenTemplate.vue'
+  const loading = ref(false)
 </script>
 
 <style scoped lang="scss">

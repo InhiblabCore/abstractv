@@ -8,22 +8,22 @@
   </n-empty>
 </template>
 
-<script lang='ts'>
-import { defineComponent, onMounted } from 'vue'
-import { useMessage } from 'naive-ui'
-import { IconTutorial } from '@/icons'
+<script lang="ts">
+  import { defineComponent, onMounted } from 'vue'
+  import { useMessage } from 'naive-ui'
+  import { IconTutorial } from '@/icons'
 
-export default defineComponent({
-  name: 'MyCase',
-  components: {
-    IconTutorial,
-  },
-  setup() {
-    const nMessage = useMessage()
+  export default defineComponent({
+    name: 'MyCase',
+    components: {
+      IconTutorial,
+    },
+    setup() {
+      const nMessage = useMessage()
 
-    onMounted(() => {
-      nMessage.warning('建设中。。。')
-    })
-  },
-})
+      onMounted(() => {
+        nMessage.warning('建设中。。。')
+      })
+    },
+  })
 </script>

@@ -1,6 +1,6 @@
-import { createRouter, RouteRecordRaw, createWebHashHistory } from 'vue-router';
+import { createRouter, RouteRecordRaw, createWebHashHistory } from 'vue-router'
 
-export const routerHistory = createWebHashHistory();
+export const routerHistory = createWebHashHistory()
 const navRoutes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -34,7 +34,7 @@ const navRoutes: Array<RouteRecordRaw> = [
       },
     ],
   },
-];
+]
 
 const routers = createRouter({
   history: routerHistory,
@@ -63,6 +63,6 @@ const routers = createRouter({
     //   component: () => import('@/views/Home/index.vue'),
     // },
   ],
-});
+})
 
-export { routers };
+export { routers }

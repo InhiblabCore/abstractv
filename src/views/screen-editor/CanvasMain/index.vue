@@ -28,26 +28,26 @@
 </template>
 
 <script lang="ts" setup>
-  import createComponent from '@/components/createComponent';
-  import useCanvasScale from '@/hooks/useCanvasScale';
-  import { useEditorComStore } from '@/store/modules/editorCom';
-  import { CSSProperties } from 'vue';
-  import backgroundImage from '@/assets/background.png';
-  import CanvasContainer from './CanvasContainer.vue';
-  import { useEventEmitter } from 'vue3-hooks-plus';
+  import createComponent from '@/components/createComponent'
+  import useCanvasScale from '@/hooks/useCanvasScale'
+  import { useEditorComStore } from '@/store/modules/editorCom'
+  import { CSSProperties } from 'vue'
+  import backgroundImage from '@/assets/background.png'
+  import CanvasContainer from './CanvasContainer.vue'
+  import { useEventEmitter } from 'vue3-hooks-plus'
 
-  const editorComStore = useEditorComStore();
+  const editorComStore = useEditorComStore()
 
-  const componentsListDate = computed(() => editorComStore.getComponentsListDate);
-  const eventBus = useEventEmitter({ global: true });
+  const componentsListDate = computed(() => editorComStore.getComponentsListDate)
+  const eventBus = useEventEmitter({ global: true })
 
-  const { canvasScale, pageHeight, pageWidth, canvasHeight, canvasWidth } = useCanvasScale();
+  const { canvasScale, pageHeight, pageWidth, canvasHeight, canvasWidth } = useCanvasScale()
   const screenStyle = computed(() => {
     return {
       width: pageWidth,
       height: pageHeight,
-    } as CSSProperties;
-  });
+    } as CSSProperties
+  })
 
   const canvasStyle = computed(() => {
     return {
@@ -57,44 +57,44 @@
       position: 'absolute',
       width: `${canvasWidth.value}px`,
       transform: `scale(${canvasScale.value}) translate(0px, 0px)`,
-    } as CSSProperties;
-  });
+    } as CSSProperties
+  })
 
   const dropToAddCom = async (event: any) => {
-    event.preventDefault();
+    event.preventDefault()
 
     try {
-      const name = event.dataTransfer.getData('text');
+      const name = event.dataTransfer.getData('text')
 
       if (name) {
         // ToolbarModule.addLoading();
-        let component: any = await createComponent(name);
-        const scale = canvasScale.value;
+        let component: any = await createComponent(name)
+        const scale = canvasScale.value
 
-        const offsetX = (event.clientX - 384) / scale;
-        const offsetY = (event.clientY - 140) / scale;
+        const offsetX = (event.clientX - 384) / scale
+        const offsetY = (event.clientY - 140) / scale
 
-        component.attr.x = Math.round(offsetX - component.attr.w / 2);
-        component.attr.y = Math.round(offsetY - component.attr.h / 2);
-        component.attr.zIndex = editorComStore.getComponentZindex;
+        component.attr.x = Math.round(offsetX - component.attr.w / 2)
+        component.attr.y = Math.round(offsetY - component.attr.h / 2)
+        component.attr.zIndex = editorComStore.getComponentZindex
 
-        eventBus.emit('select', { componentId: component.componentId });
-        editorComStore.addComponent(component);
+        eventBus.emit('select', { componentId: component.componentId })
+        editorComStore.addComponent(component)
       }
     } catch {
       // TODO
     }
-  };
+  }
 
   const dragOver = (ev: any) => {
-    ev.preventDefault();
-    ev.stopPropagation();
-    ev.dataTransfer.dropEffect = 'copy';
-  };
+    ev.preventDefault()
+    ev.stopPropagation()
+    ev.dataTransfer.dropEffect = 'copy'
+  }
 
   const cancelSelectCom = () => {
-    eventBus.emit('select', { componentId: 'page' });
-  };
+    eventBus.emit('select', { componentId: 'page' })
+  }
 </script>
 
 <style lang="scss" scoped>

@@ -9,9 +9,9 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted } from 'vue';
-  import { useMessage } from 'naive-ui';
-  import { IconMyCom } from '@/icons';
+  import { defineComponent, onMounted } from 'vue'
+  import { useMessage } from 'naive-ui'
+  import { IconMyCom } from '@/icons'
 
   export default defineComponent({
     name: 'MyComponents',
@@ -19,11 +19,11 @@
       IconMyCom,
     },
     setup() {
-      const nMessage = useMessage();
+      const nMessage = useMessage()
 
       onMounted(() => {
-        nMessage.warning('建设中。。。');
-      });
+        nMessage.warning('建设中。。。')
+      })
     },
-  });
+  })
 </script>

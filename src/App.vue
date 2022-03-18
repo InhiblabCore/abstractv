@@ -9,9 +9,9 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent } from 'vue';
-  import { themeOverrides } from '@/styles/themes/naive-ui-theme-overrides';
-  import AppMessage from './AppMessage.vue';
+  import { defineComponent } from 'vue'
+  import { themeOverrides } from '@/styles/themes/naive-ui-theme-overrides'
+  import AppMessage from './AppMessage.vue'
 
   export default defineComponent({
     name: 'App',
@@ -21,7 +21,7 @@
     setup() {
       return {
         themeOverrides,
-      };
+      }
     },
-  });
+  })
 </script>
