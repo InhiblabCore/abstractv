@@ -1,4 +1,4 @@
-import { ProxyOptions } from 'vite';
+import { ProxyOptions } from 'vite'
 
 export const proxy: Record<string, Record<string, ProxyOptions>> = {
   test: {
@@ -9,4 +9,4 @@ export const proxy: Record<string, Record<string, ProxyOptions>> = {
   },
   development: {},
   production: {},
-};
+}
