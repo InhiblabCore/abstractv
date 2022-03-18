@@ -224,7 +224,6 @@
       left: 40px;
       user-select: none;
       cursor: pointer;
-
       color: #e6f7ff;
       font-weight: 900;
       font-size: 48px;

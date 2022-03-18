@@ -60,6 +60,7 @@
       width: 100%;
       z-index: 1;
     }
+
     .abstractv-main {
       user-select: none;
 

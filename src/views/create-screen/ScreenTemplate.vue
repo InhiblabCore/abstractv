@@ -58,6 +58,7 @@
     filter: grayscale(1);
     opacity: 0.36;
   }
+
   .creator-wp {
     flex: 1;
     overflow: hidden;
