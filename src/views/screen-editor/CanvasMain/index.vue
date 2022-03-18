@@ -78,7 +78,7 @@
         component.attr.y = Math.round(offsetY - component.attr.h / 2)
         component.attr.zIndex = editorComStore.getComponentZindex
 
-        eventBus.emit('select', { componentId: component.componentId })
+        eventBus.emit('select', { compone ntId: component.componentId })
         editorComStore.addComponent(component)
       }
     } catch {
