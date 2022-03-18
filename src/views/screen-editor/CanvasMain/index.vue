@@ -1,6 +1,6 @@
 <template>
   <div class="canvas-main">
-    <div id="canvas-wp" class="canvas-panel-wrap">
+    <div id="canvas-wp" class="canvas-panel-wrap" @mousedown.stop="cancelSelectCom">
       <div id="canvas-wp" class="canvas-panel-wrap" :style="screenStyle">
         <div
           id="canvas-coms"
@@ -9,50 +9,45 @@
           @drop="dropToAddCom"
           :style="canvasStyle"
         >
-          <div
-            v-for="com in componentsListDate"
-            :key="com.name"
-            :style="{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: `${com.attr.w}px`,
-              height: `${com.attr.h}px`,
-              transform: `translate(${com.attr.x}px,${com.attr.y}px)`,
-              zIndex: com.attr.zIndex,
-            }"
+          <canvas-container
+            v-for="component in componentsListDate"
+            :key="component.name"
+            :component="component"
           >
             <component
-              :is="com.name"
+              :is="component.name"
               :style="{
                 transform: 'translateZ(0px)',
                 opacity: 1,
               }"
             />
-          </div> </div
+          </canvas-container> </div
       ></div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import createComponent from '@/components/createComponent';
-  import useCanvasScale from '@/hooks/useCanvasScale';
-  import { useEditorComStore } from '@/store/modules/editorCom';
-  import { CSSProperties } from 'vue';
-  import backgroundImage from '@/assets/background.png';
+  import createComponent from '@/components/createComponent'
+  import useCanvasScale from '@/hooks/useCanvasScale'
+  import { useEditorComStore } from '@/store/modules/editorCom'
+  import { CSSProperties } from 'vue'
+  import backgroundImage from '@/assets/background.png'
+  import CanvasContainer from './CanvasContainer.vue'
+  import { useEventEmitter } from 'vue3-hooks-plus'
 
-  const editorComStore = useEditorComStore();
+  const editorComStore = useEditorComStore()
 
-  const componentsListDate = computed(() => editorComStore.getComponentsListDate);
+  const componentsListDate = computed(() => editorComStore.getComponentsListDate)
+  const eventBus = useEventEmitter({ global: true })
 
-  const { canvasScale, pageHeight, pageWidth, canvasHeight, canvasWidth } = useCanvasScale();
+  const { canvasScale, pageHeight, pageWidth, canvasHeight, canvasWidth } = useCanvasScale()
   const screenStyle = computed(() => {
     return {
       width: pageWidth,
       height: pageHeight,
-    } as CSSProperties;
-  });
+    } as CSSProperties
+  })
 
   const canvasStyle = computed(() => {
     return {
@@ -62,41 +57,44 @@
       position: 'absolute',
       width: `${canvasWidth.value}px`,
       transform: `scale(${canvasScale.value}) translate(0px, 0px)`,
-    } as CSSProperties;
-  });
+    } as CSSProperties
+  })
 
   const dropToAddCom = async (event: any) => {
-    event.preventDefault();
+    event.preventDefault()
 
     try {
-      const name = event.dataTransfer.getData('text');
-      console.log(event);
-      console.log(name);
+      const name = event.dataTransfer.getData('text')
 
       if (name) {
         // ToolbarModule.addLoading();
-        let component: any = await createComponent(name);
-        const scale = canvasScale.value;
+        let component: any = await createComponent(name)
+        const scale = canvasScale.value
 
-        const offsetX = (event.clientX - 384) / scale;
-        const offsetY = (event.clientY - 140) / scale;
+        const offsetX = (event.clientX - 384) / scale
+        const offsetY = (event.clientY - 140) / scale
 
-        component.attr.x = Math.round(offsetX - component.attr.w / 2);
-        component.attr.y = Math.round(offsetY - component.attr.h / 2);
-        component.attr.zIndex = editorComStore.getComponentZindex;
+        component.attr.x = Math.round(offsetX - component.attr.w / 2)
+        component.attr.y = Math.round(offsetY - component.attr.h / 2)
+        component.attr.zIndex = editorComStore.getComponentZindex
 
-        editorComStore.addComponent(component);
+        eventBus.emit('select', { componentId: component.componentId })
+        editorComStore.addComponent(component)
       }
     } catch {
       // TODO
     }
-  };
+  }
 
   const dragOver = (ev: any) => {
-    ev.preventDefault();
-    ev.stopPropagation();
-    ev.dataTransfer.dropEffect = 'copy';
-  };
+    ev.preventDefault()
+    ev.stopPropagation()
+    ev.dataTransfer.dropEffect = 'copy'
+  }
+
+  const cancelSelectCom = () => {
+    eventBus.emit('select', { componentId: 'page' })
+  }
 </script>
 
 <style lang="scss" scoped>

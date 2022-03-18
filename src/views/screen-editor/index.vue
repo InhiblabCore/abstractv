@@ -22,11 +22,11 @@
 </template>
 
 <script lang="ts" setup>
-  import Header from './Header/index.vue';
-  import MaterialArea from './MaterialArea/index.vue';
+  import Header from './Header/index.vue'
+  import MaterialArea from './MaterialArea/index.vue'
   // import ConfigPanel from './ConfigPanel/index.vue';
-  import Footer from './Footer/index.vue';
-  import CanvasMain from './CanvasMain/index.vue';
+  import Footer from './Footer/index.vue'
+  import CanvasMain from './CanvasMain/index.vue'
 </script>
 
 <style scoped lang="scss">

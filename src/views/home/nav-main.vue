@@ -18,62 +18,62 @@
 <script lang="ts">
   export default {
     name: 'NavMain',
-  };
+  }
 </script>
 
 <script lang="ts" setup>
-  import { ref, onMounted } from 'vue';
-  import type { PropType } from 'vue';
-  import { useRoute } from 'vue-router';
-  import { IconLayer, IconMyData, IconMyCom, IconTutorial } from '@/icons';
-  import { NavCanvas } from './nav-canvas';
-  import { useEventListener, useDebounceFn } from 'vue3-hooks-plus';
+  import { ref, onMounted } from 'vue'
+  import type { PropType } from 'vue'
+  import { useRoute } from 'vue-router'
+  import { IconLayer, IconMyData, IconMyCom, IconTutorial } from '@/icons'
+  import { NavCanvas } from './nav-canvas'
+  import { useEventListener, useDebounceFn } from 'vue3-hooks-plus'
 
   type NavDataType = {
-    id: number;
-    key: string;
-    name: string;
-  };
+    id: number
+    key: string
+    name: string
+  }
 
-  const route = useRoute();
-  const activeNav = ref(0);
-  let nc: NavCanvas | null = null;
+  const route = useRoute()
+  const activeNav = ref(0)
+  let nc: NavCanvas | null = null
 
   const props = defineProps({
     navs: {
       type: Array as PropType<NavDataType[]>,
       required: true,
     },
-  });
-  const emit = defineEmits(['change']);
+  })
+  const emit = defineEmits(['change'])
 
   const { run: runDebounceFn } = useDebounceFn(
     () => {
       if (nc) {
-        nc.resize();
+        nc.resize()
       }
     },
     {
       wait: 500,
     },
-  );
+  )
   useEventListener('resize', () => {
-    runDebounceFn();
-  });
+    runDebounceFn()
+  })
 
   const toggleNav = (nav: NavDataType) => {
     if (nc) {
-      activeNav.value = nav.id;
-      nc.toggle(nav.id);
-      emit('change', nav);
+      activeNav.value = nav.id
+      nc.toggle(nav.id)
+      emit('change', nav)
     }
-  };
+  }
 
   onMounted(() => {
-    const nav = props.navs.find((m) => m.key === route.name);
-    activeNav.value = nav ? nav.id : 0;
-    nc = new NavCanvas('nav-canvas', '.nav-main .nav-span', activeNav.value);
-  });
+    const nav = props.navs.find((m) => m.key === route.name)
+    activeNav.value = nav ? nav.id : 0
+    nc = new NavCanvas('nav-canvas', '.nav-main .nav-span', activeNav.value)
+  })
 </script>
 
 <style lang="scss" scoped>

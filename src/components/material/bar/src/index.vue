@@ -5,13 +5,13 @@
 </template>
 
 <script lang="ts" setup>
-  import { useEcharts } from 'vue3-hooks-plus';
+  import { useEcharts } from 'vue3-hooks-plus'
 
   //   const props = defineProps<{
   //     com: any;
   //   }>();
 
-  const { chart, container } = useEcharts();
+  const { chart, container } = useEcharts()
 
   //   const config = toRef(props.com, 'config');
   //   const attr = toRef(props.com, 'attr');
@@ -20,8 +20,8 @@
     return {
       width: `400px`,
       height: `300px`,
-    };
-  });
+    }
+  })
   const option: any = {
     backgroundColor: 'transparent',
     color: '#384757',
@@ -204,13 +204,13 @@
         smooth: true,
       },
     ],
-  };
+  }
 
   onMounted(() => {
     if (chart.value) {
-      chart.value.setOption(option);
+      chart.value.setOption(option)
     }
-  });
+  })
 </script>
 
 <style scoped lang="less"></style>

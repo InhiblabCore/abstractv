@@ -51,7 +51,7 @@ import {
   NUpload,
   NUploadTrigger,
   NUploadDragger,
-} from 'naive-ui';
+} from 'naive-ui'
 
 export default create({
   components: [
@@ -107,4 +107,4 @@ export default create({
     NUploadTrigger,
     NUploadDragger,
   ],
-});
+})

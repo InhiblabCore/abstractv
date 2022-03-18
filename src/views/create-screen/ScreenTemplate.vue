@@ -30,16 +30,16 @@
 </template>
 
 <script lang="ts" setup>
-  import { IconPlus } from '@/icons';
-  import { useBoolean } from 'vue3-hooks-plus';
-  import CreateModal from './CreateModal.vue';
+  import { IconPlus } from '@/icons'
+  import { useBoolean } from 'vue3-hooks-plus'
+  import CreateModal from './CreateModal.vue'
 
-  const [visibleCreateDialog, { set: setVisibleCreateDialog }] = useBoolean(false);
+  const [visibleCreateDialog, { set: setVisibleCreateDialog }] = useBoolean(false)
 
   // @ts-ignore
   const confirmCreate = () => {
-    setVisibleCreateDialog(true);
-  };
+    setVisibleCreateDialog(true)
+  }
 </script>
 
 <style scoped lang="scss">
@@ -58,6 +58,7 @@
     filter: grayscale(1);
     opacity: 0.36;
   }
+
   .creator-wp {
     flex: 1;
     overflow: hidden;

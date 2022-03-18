@@ -30,29 +30,29 @@
 </template>
 
 <script lang="ts" setup>
-  import { useMessage } from 'naive-ui';
-  const nMessage = useMessage();
-  const router = useRouter();
+  import { useMessage } from 'naive-ui'
+  const nMessage = useMessage()
+  const router = useRouter()
 
   const props =
-    defineProps<{ visibleCreateDialog?: boolean; setVisibleCreateDialog: (v: boolean) => void }>();
+    defineProps<{ visibleCreateDialog?: boolean; setVisibleCreateDialog: (v: boolean) => void }>()
 
-  const projectName = ref('');
-  const groupId = ref(0);
-  const saveLoading = ref(false);
-  const groups = ref([{ name: '未分组', id: 1 }]);
+  const projectName = ref('')
+  const groupId = ref(0)
+  const saveLoading = ref(false)
+  const groups = ref([{ name: '未分组', id: 1 }])
   const groupOpts = computed(() => {
-    return groups.value.map((m) => ({ value: m.id, label: m.name }));
-  });
+    return groups.value.map((m) => ({ value: m.id, label: m.name }))
+  })
 
   const doCreate = async () => {
     try {
       if (!projectName.value) {
-        nMessage.error('请输入大屏名称');
-        return;
+        nMessage.error('请输入大屏名称')
+        return
       }
-      saveLoading.value = true;
-      props.setVisibleCreateDialog(false);
+      saveLoading.value = true
+      props.setVisibleCreateDialog(false)
       router.push({
         name: 'ScreenEditor',
         params: {
@@ -61,13 +61,13 @@
         query: {
           tpl: 111,
         },
-      });
+      })
     } catch (error: any) {
-      nMessage.error(error.message);
+      nMessage.error(error.message)
     } finally {
-      saveLoading.value = false;
+      saveLoading.value = false
     }
-  };
+  }
 </script>
 
 <style scoped lang="scss">
