@@ -11,24 +11,12 @@
           <slot></slot>
           <div class="datav-wrapper-event-disable" :style="wrapperStyle"></div>
         </div>
-        <template v-for="(v, k) in points" :key="k">
-          <i v-if="v.rotateStyle" :class="`${v.name}-handler`" data-html2canvas-ignore>
-            <span class="rotate-handler" :style="v.rotateStyle" @mousedown.prevent.stop="onRotate">
-              <span
-                class="control-point"
-                :style="v.style"
-                @mousedown.prevent.stop="onZoom($event, k)"
-              ></span>
-            </span>
-          </i>
-          <i v-else :class="`${v.name}-handler`" data-html2canvas-ignore>
-            <span
-              class="control-point"
-              :style="v.style"
-              @mousedown.prevent.stop="onZoom($event, k)"
-            ></span>
-          </i>
-        </template>
+        <ControlPoint
+          :component="component"
+          :scale="scale"
+          :selectCom="selectCom"
+          :instance="instance"
+        />
         <div class="transform-bg"></div>
       </div>
     </div>
@@ -38,14 +26,12 @@
 <script lang="ts" setup>
   import useCanvasScale from '@/hooks/useCanvasScale'
   import { useEditorComStore } from '@/store/modules/editorCom'
-  import { CSSProperties } from 'vue'
   import { useEventEmitter, useHover } from 'vue3-hooks-plus'
-  import { Direction, getCursors, handleMove, handleRotate } from './utils'
+  import { handleMove } from './utils'
+  import ControlPoint from './ControlPoint.vue'
   const editorComStore = useEditorComStore()
   const event = useEventEmitter({ global: true })
-
   const instance = getCurrentInstance()
-
   const props = defineProps<{
     component: {
       attr: {
@@ -82,54 +68,6 @@
     transform: `translate(${props.component.attr.x}px, ${props.component.attr.y}px)`,
   }))
 
-  const cursor = computed(() => getCursors(props.component.attr.deg))
-  const points = computed<{
-    [k in Direction]: {
-      name: string
-      style: Partial<CSSProperties>
-      rotateStyle?: Partial<CSSProperties>
-    }
-  }>(() => {
-    const transform = `scale(${1 / scale.value}, ${1 / scale.value})`
-    return {
-      t: {
-        name: 'top',
-        style: { cursor: cursor.value.t, transform },
-      },
-      rt: {
-        name: 'top-right',
-        style: { cursor: cursor.value.rt },
-        rotateStyle: { 'transform-origin': '25% 75%', transform },
-      },
-      r: {
-        name: 'right',
-        style: { cursor: cursor.value.r, transform },
-      },
-      rb: {
-        name: 'bottom-right',
-        style: { cursor: cursor.value.rb },
-        rotateStyle: { 'transform-origin': '25% 25%', transform },
-      },
-      b: {
-        name: 'bottom',
-        style: { cursor: cursor.value.b, transform },
-      },
-      lb: {
-        name: 'bottom-left',
-        style: { cursor: cursor.value.lb },
-        rotateStyle: { 'transform-origin': '75% 25%', transform },
-      },
-      l: {
-        name: 'left',
-        style: { cursor: cursor.value.l, transform },
-      },
-      lt: {
-        name: 'top-left',
-        style: { cursor: cursor.value.lt },
-        rotateStyle: { 'transform-origin': '75% 75%', transform },
-      },
-    }
-  })
   const canvasContainerClass = computed(() => ({
     selected: props.component.selected,
     hided: props.component.hided,
@@ -157,9 +95,6 @@
     }
     event.emit('select', { componentId: props.component.componentId })
   }
-  const onRotate = (ev: MouseEvent) => {
-    handleRotate(ev, instance?.vnode.el as HTMLElement, props.component)
-  }
 
   const onMove = (e: MouseEvent) => {
     handleMove({
@@ -169,12 +104,6 @@
       scale: scale.value,
     })
     selectCom()
-  }
-  const onZoom = (ev: MouseEvent, dir: Direction) => {
-    selectCom()
-    console.log(ev, dir)
-
-    //   handleZoom(ev, dir, props.com, scale.value);
   }
 </script>
 <style lang="scss" scoped>
