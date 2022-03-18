@@ -1,6 +1,6 @@
 <template>
   <div class="canvas-main">
-    <div id="canvas-wp" class="canvas-panel-wrap">
+    <div id="canvas-wp" class="canvas-panel-wrap" @mousedown.stop="cancelSelectCom">
       <div id="canvas-wp" class="canvas-panel-wrap" :style="screenStyle">
         <div
           id="canvas-coms"
@@ -9,27 +9,19 @@
           @drop="dropToAddCom"
           :style="canvasStyle"
         >
-          <div
-            v-for="com in componentsListDate"
-            :key="com.name"
-            :style="{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: `${com.attr.w}px`,
-              height: `${com.attr.h}px`,
-              transform: `translate(${com.attr.x}px,${com.attr.y}px)`,
-              zIndex: com.attr.zIndex,
-            }"
+          <canvas-container
+            v-for="component in componentsListDate"
+            :key="component.name"
+            :component="component"
           >
             <component
-              :is="com.name"
+              :is="component.name"
               :style="{
                 transform: 'translateZ(0px)',
                 opacity: 1,
               }"
             />
-          </div> </div
+          </canvas-container> </div
       ></div>
     </div>
   </div>
@@ -41,10 +33,13 @@
   import { useEditorComStore } from '@/store/modules/editorCom';
   import { CSSProperties } from 'vue';
   import backgroundImage from '@/assets/background.png';
+  import CanvasContainer from './CanvasContainer.vue';
+  import { useEventEmitter } from 'vue3-hooks-plus';
 
   const editorComStore = useEditorComStore();
 
   const componentsListDate = computed(() => editorComStore.getComponentsListDate);
+  const eventBus = useEventEmitter({ global: true });
 
   const { canvasScale, pageHeight, pageWidth, canvasHeight, canvasWidth } = useCanvasScale();
   const screenStyle = computed(() => {
@@ -70,8 +65,6 @@
 
     try {
       const name = event.dataTransfer.getData('text');
-      console.log(event);
-      console.log(name);
 
       if (name) {
         // ToolbarModule.addLoading();
@@ -85,6 +78,7 @@
         component.attr.y = Math.round(offsetY - component.attr.h / 2);
         component.attr.zIndex = editorComStore.getComponentZindex;
 
+        eventBus.emit('select', { componentId: component.componentId });
         editorComStore.addComponent(component);
       }
     } catch {
@@ -96,6 +90,10 @@
     ev.preventDefault();
     ev.stopPropagation();
     ev.dataTransfer.dropEffect = 'copy';
+  };
+
+  const cancelSelectCom = () => {
+    eventBus.emit('select', { componentId: 'page' });
   };
 </script>
 

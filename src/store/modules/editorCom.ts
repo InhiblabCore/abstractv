@@ -19,8 +19,14 @@ export const useEditorComStore = defineStore('editor-com', {
     },
   },
   actions: {
-    addComponent(componnet: any) {
-      this.componentsListDate.push(componnet);
+    addComponent(component: any) {
+      this.componentsListDate.push(component);
+    },
+    setComponentSelect(component: any) {
+      component.selected = true;
+    },
+    cancelComponentSelect(component: any) {
+      component.selected = false;
     },
   },
 });
