@@ -25,7 +25,6 @@
 </template>
 
 <script lang="ts" setup>
-  import useCanvasScale from '@/hooks/useCanvasScale'
   import { useEditorComStore } from '@/store/modules/editorCom'
   import { useEventEmitter, useHover } from 'vue3-hooks-plus'
   import { handleMove } from './utils'
@@ -58,10 +57,17 @@
     else editorComStore.cancelComponentSelect(props.component)
   })
 
-  const { canvasScale: scale } = useCanvasScale()
-
   const containScaleRef = ref()
-  const isHover = useHover(containScaleRef)
+  const mouseIsHover = useHover(containScaleRef)
+
+  watch(mouseIsHover, (b) => {
+    if (b) editorComStore.setComponentHover(true, props.component.componentId)
+    else editorComStore.cancelComponentHover(false, props.component.componentId)
+  })
+
+  const isHover = computed(() => props.component.hovered)
+
+  const scale = computed(() => editorComStore.getCanvasScale)
 
   const CanvasContainerStyle = computed(() => ({
     top: 0,
@@ -82,7 +88,6 @@
   const handlerClass = computed(() => ({
     hided: !props.component.selected || props.component.locked,
   }))
-
   const handlerStyle = computed(() => ({
     cursor: 'move',
     transform: `rotate(${props.component.attr.deg}deg)`,
@@ -105,6 +110,8 @@
       mouseStartEvent: e,
       grid: 8,
       scale: scale.value,
+      calcAlignLine: editorComStore.calcAlignLine,
+      hideAlignLine: editorComStore.hideAlignLine,
     })
     selectCom()
   }

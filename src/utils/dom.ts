@@ -1,3 +1,5 @@
+import classNames from 'classnames'
+
 const trim = function (s: string) {
   return (s || '').replace(/^[\s\uFEFF]+|[\s\uFEFF]+$/g, '')
 }
@@ -12,24 +14,10 @@ export function hasClass(el: HTMLElement, cls: string): boolean {
   }
 }
 
-export function addClass(el: HTMLElement, cls: string): void {
+export function addClass(el: HTMLElement, cls: string | { [x: string]: boolean }): void {
   if (!el) return
-  let curClass = el.className
-  const classes = (cls || '').split(' ')
-
-  for (let i = 0, j = classes.length; i < j; i++) {
-    const clsName = classes[i]
-    if (!clsName) continue
-
-    if (el.classList) {
-      el.classList.add(clsName)
-    } else if (!hasClass(el, clsName)) {
-      curClass += ` ${clsName}`
-    }
-  }
-  if (!el.classList) {
-    el.className = curClass
-  }
+  const curClass = el.className
+  el.classList.add(classNames(curClass, cls))
 }
 
 export function removeClass(el: HTMLElement, cls: string): void {

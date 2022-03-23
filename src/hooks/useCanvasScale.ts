@@ -1,12 +1,12 @@
+import { useEditorComStore } from '@/store/modules/editorCom'
 import { useEventListener } from 'vue3-hooks-plus'
 
 export default function useCanvasScale(options?: { useWidthHeightMini?: boolean }) {
   const { useWidthHeightMini } = options ?? {}
 
-  const canvasScale = ref(0.2)
-  const canvasHeight = ref(1080)
-  const canvasWidth = ref(1920)
+  const editorComStore = useEditorComStore()
 
+  const canvasScale = ref(0.2)
   const width = 1920
   const height = 1080
 
@@ -15,9 +15,9 @@ export default function useCanvasScale(options?: { useWidthHeightMini?: boolean 
       ? Math.min(window.innerWidth - 440, window.innerHeight / height)
       : (window.innerWidth - 440) / width
 
-    canvasHeight.value = height - 100
-    canvasWidth.value = width
-    canvasScale.value = scale
+    editorComStore.setCanvasScale(scale)
+    editorComStore.setCanvasHeight(height - 100)
+    editorComStore.setCanvasWidth(width)
   }
 
   useEventListener('resize', () => handleScale())
@@ -28,9 +28,6 @@ export default function useCanvasScale(options?: { useWidthHeightMini?: boolean 
 
   return {
     canvasScale,
-    canvasHeight,
-    canvasWidth,
-    pageWidth: 1920,
-    pageHeight: 1080,
+    handleScale,
   }
 }

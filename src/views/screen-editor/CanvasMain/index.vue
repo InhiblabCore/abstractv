@@ -2,6 +2,7 @@
   <div class="canvas-main">
     <div id="canvas-wp" class="canvas-panel-wrap" @mousedown.stop="cancelSelectCom">
       <div id="canvas-wp" class="canvas-panel-wrap" :style="screenStyle">
+        <align-line />
         <ruler-tool />
         <div
           id="canvas-coms"
@@ -38,17 +39,22 @@
   import CanvasContainer from './CanvasContainer.vue'
   import { useEventEmitter } from 'vue3-hooks-plus'
   import RulerTool from './RulerTool/index.vue'
+  import AlignLine from './RulerTool/align-line.vue'
 
+  useCanvasScale()
   const editorComStore = useEditorComStore()
   const componentsListDate = computed(() => editorComStore.getComponentsListDate)
   const eventBus = useEventEmitter({ global: true })
-  const { canvasScale, pageHeight, pageWidth, canvasHeight, canvasWidth } = useCanvasScale()
+
+  const canvasScale = computed(() => editorComStore.getCanvasScale)
+  const canvasHeight = computed(() => editorComStore.getCanvasHeight)
+  const canvasWidth = computed(() => editorComStore.getCanvasWidth)
 
   // 固定外部宽高
   const screenStyle = computed(() => {
     return {
-      width: pageWidth,
-      height: pageHeight,
+      width: editorComStore.page.width,
+      height: editorComStore.page.height,
     } as CSSProperties
   })
 
@@ -60,7 +66,7 @@
       height: `${canvasHeight.value}px`,
       position: 'absolute',
       width: `${canvasWidth.value}px`,
-      transform: `scale(${canvasScale.value}) translate(0px, 0px)`,
+      transform: `scale(${editorComStore.getCanvasScale}) translate(0px, 0px)`,
     } as CSSProperties
   })
 
@@ -69,7 +75,6 @@
 
     try {
       const name = event.dataTransfer.getData('text')
-
       if (name) {
         // ToolbarModule.addLoading();
         // 创建一个组件
@@ -98,6 +103,7 @@
       }
     } catch {
       // TODO
+      console.log('error')
     }
   }
 

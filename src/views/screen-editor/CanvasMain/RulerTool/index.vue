@@ -20,8 +20,8 @@
 </template>
 
 <script lang="ts" setup>
-  import useCanvasScale from '@/hooks/useCanvasScale'
   import { IconLineShow, IconLineHide } from '@/icons'
+  import { useEditorComStore } from '@/store/modules/editorCom'
   import { ComputedRef } from 'vue'
   import { useBoolean } from 'vue3-hooks-plus'
   import useRulerTool, { RulerOption } from './useRulerTool'
@@ -29,25 +29,27 @@
   const hScroll = ref(0)
   const vScroll = ref(0)
 
-  const { canvasWidth, canvasHeight, canvasScale } = useCanvasScale()
+  const editorComStore = useEditorComStore()
   const [visible, { set: setVisible }] = useBoolean(true)
+
+  const scale = computed(() => editorComStore.getCanvasScale)
+  const canvasHeight = computed(() => editorComStore.getCanvasHeight)
+  const canvasWidth = computed(() => editorComStore.getCanvasWidth)
+
   const cw = document.documentElement.clientWidth
-
   const hWidth = Math.max(canvasWidth.value, cw)
-
-  const scale = computed(() => canvasScale.value)
   const vHeight = computed(() => canvasHeight.value)
 
   const hOptions = computed(() => ({
     direction: 'TB',
     width: hWidth,
-    scale: canvasScale.value,
+    scale: scale.value,
   }))
 
   const vOptions = computed(() => ({
     direction: 'LR',
     width: canvasHeight.value,
-    scale: canvasScale.value,
+    scale: scale.value,
   }))
 
   const {
@@ -83,14 +85,6 @@
     createArithmeticHScale()
     createArithmeticVScale()
   })
-
-  //   const onScroll = (ev: Event) => {
-  //     console.log(666)
-
-  //     // const dom = ev.target as HTMLElement
-  //     // hScroll.value = dom.scrollLeft
-  //     // vScroll.value = dom.scrollTop
-  //   }
 
   const toggleGuides = (visible: boolean) => {
     setVisible(visible)

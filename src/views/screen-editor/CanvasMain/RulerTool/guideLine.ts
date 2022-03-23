@@ -33,7 +33,7 @@ export default class GuideLine {
     const guideLine = document.createElement('div')
 
     guideLine.title = '双击删除参考线'
-    addClass(guideLine, 'ruler-line')
+    addClass(guideLine, { 'ruler-line': true })
     this.guideLine = guideLine
 
     const { coor: oldCoor } = this

@@ -89,11 +89,15 @@ export const handleMove = ({
   mouseStartEvent,
   scale,
   grid,
+  calcAlignLine,
+  hideAlignLine,
 }: {
   component: any
   mouseStartEvent: MouseEvent
   scale: number
   grid: number
+  calcAlignLine: (component: any) => void
+  hideAlignLine: (component: any) => void
 }) => {
   const componentAttr = _.clone(component.attr)
   const cloneComponentAttr: IPoint = { x: componentAttr.x, y: componentAttr.y }
@@ -107,11 +111,14 @@ export const handleMove = ({
       componentAttr.y +
       Math.round((listenMouseEvent.clientY - mouseStartEvent.clientY) / scale / grid) * grid
     component.attr = { ...component.attr, x: cloneComponentAttr.x, y: cloneComponentAttr.y }
+
+    calcAlignLine?.(component)
   }
 
   const up = () => {
     document.removeEventListener('mousemove', move)
     document.removeEventListener('mouseup', up)
+    hideAlignLine?.(component)
   }
 
   document.addEventListener('mousemove', move)
