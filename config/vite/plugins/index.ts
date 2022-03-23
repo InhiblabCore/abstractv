@@ -1,12 +1,12 @@
-import type { Plugin } from 'vite';
-import vue from '@vitejs/plugin-vue';
-import legacy from '@vitejs/plugin-legacy';
-import vueJsx from '@vitejs/plugin-vue-jsx';
-import { configStyleImportPlugin } from './styleImport';
-import { autoRegistryComponents } from './component';
-import { AutoImportDeps } from './autoImport';
-import { configCompressPlugin } from './compress';
-import ElementPlus from 'unplugin-element-plus/vite';
+import type { Plugin } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import legacy from '@vitejs/plugin-legacy'
+import vueJsx from '@vitejs/plugin-vue-jsx'
+import { configStyleImportPlugin } from './styleImport'
+import { autoRegistryComponents } from './component'
+import { AutoImportDeps } from './autoImport'
+import { configCompressPlugin } from './compress'
+import ElementPlus from 'unplugin-element-plus/vite'
 
 export function createVitePlugins(isBuild: boolean) {
   const vitePlugins: (Plugin | Plugin[])[] = [
@@ -23,13 +23,13 @@ export function createVitePlugins(isBuild: boolean) {
     autoRegistryComponents(),
     // 自动按需引入依赖
     AutoImportDeps(),
-  ];
+  ]
 
   // rollup-plugin-gzip
-  isBuild && vitePlugins.push(configCompressPlugin());
+  isBuild && vitePlugins.push(configCompressPlugin())
 
   // vite-plugin-style-import
-  vitePlugins.push(configStyleImportPlugin(isBuild));
+  vitePlugins.push(configStyleImportPlugin(isBuild))
 
-  return vitePlugins;
+  return vitePlugins
 }

@@ -1,7 +1,9 @@
 <template>
   <div class="canvas-main">
-    <div id="canvas-wp" class="canvas-panel-wrap">
+    <div id="canvas-wp" class="canvas-panel-wrap" @mousedown.stop="cancelSelectCom">
       <div id="canvas-wp" class="canvas-panel-wrap" :style="screenStyle">
+        <align-line />
+        <ruler-tool />
         <div
           id="canvas-coms"
           class="canvas-panel"
@@ -9,51 +11,54 @@
           @drop="dropToAddCom"
           :style="canvasStyle"
         >
-          <div
-            v-for="com in componentsListDate"
-            :key="com.name"
-            :style="{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: `${com.attr.w}px`,
-              height: `${com.attr.h}px`,
-              transform: `translate(${com.attr.x}px,${com.attr.y}px)`,
-              zIndex: com.attr.zIndex,
-            }"
+          <canvas-container
+            v-for="component in componentsListDate"
+            :key="component.name"
+            :component="component"
           >
             <component
-              :is="com.name"
+              :is="component.name"
+              :component="component"
               :style="{
                 transform: 'translateZ(0px)',
                 opacity: 1,
               }"
             />
-          </div> </div
+          </canvas-container> </div
       ></div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import createComponent from '@/components/createComponent';
-  import useCanvasScale from '@/hooks/useCanvasScale';
-  import { useEditorComStore } from '@/store/modules/editorCom';
-  import { CSSProperties } from 'vue';
-  import backgroundImage from '@/assets/background.png';
+  import createComponent from '@/components/createComponent'
+  import useCanvasScale from '@/hooks/useCanvasScale'
+  import { useEditorComStore } from '@/store/modules/editorCom'
+  import { CSSProperties } from 'vue'
+  import backgroundImage from '@/assets/background.png'
+  import CanvasContainer from './CanvasContainer.vue'
+  import { useEventEmitter } from 'vue3-hooks-plus'
+  import RulerTool from './RulerTool/index.vue'
+  import AlignLine from './RulerTool/align-line.vue'
 
-  const editorComStore = useEditorComStore();
+  useCanvasScale()
+  const editorComStore = useEditorComStore()
+  const componentsListDate = computed(() => editorComStore.getComponentsListDate)
+  const eventBus = useEventEmitter({ global: true })
 
-  const componentsListDate = computed(() => editorComStore.getComponentsListDate);
+  const canvasScale = computed(() => editorComStore.getCanvasScale)
+  const canvasHeight = computed(() => editorComStore.getCanvasHeight)
+  const canvasWidth = computed(() => editorComStore.getCanvasWidth)
 
-  const { canvasScale, pageHeight, pageWidth, canvasHeight, canvasWidth } = useCanvasScale();
+  // 固定外部宽高
   const screenStyle = computed(() => {
     return {
-      width: pageWidth,
-      height: pageHeight,
-    } as CSSProperties;
-  });
+      width: editorComStore.page.width,
+      height: editorComStore.page.height,
+    } as CSSProperties
+  })
 
+  // canvas等宽缩放
   const canvasStyle = computed(() => {
     return {
       backgroundColor: 'rgba(13,42,67,0)',
@@ -61,42 +66,58 @@
       height: `${canvasHeight.value}px`,
       position: 'absolute',
       width: `${canvasWidth.value}px`,
-      transform: `scale(${canvasScale.value}) translate(0px, 0px)`,
-    } as CSSProperties;
-  });
+      transform: `scale(${editorComStore.getCanvasScale}) translate(0px, 0px)`,
+    } as CSSProperties
+  })
 
   const dropToAddCom = async (event: any) => {
-    event.preventDefault();
+    event.preventDefault()
 
     try {
-      const name = event.dataTransfer.getData('text');
-      console.log(event);
-      console.log(name);
-
+      const name = event.dataTransfer.getData('text')
       if (name) {
         // ToolbarModule.addLoading();
-        let component: any = await createComponent(name);
-        const scale = canvasScale.value;
+        // 创建一个组件
+        let component: any = await createComponent(name)
 
-        const offsetX = (event.clientX - 384) / scale;
-        const offsetY = (event.clientY - 140) / scale;
+        // 获取缩放
+        const scale = canvasScale.value
 
-        component.attr.x = Math.round(offsetX - component.attr.w / 2);
-        component.attr.y = Math.round(offsetY - component.attr.h / 2);
-        component.attr.zIndex = editorComStore.getComponentZindex;
+        // X方向减去左边的工具宽度 加 画布间隙
+        const offsetX = (event.clientX - 384) / scale
 
-        editorComStore.addComponent(component);
+        // y方向减去顶部的工具宽度 加 画布间隙
+        const offsetY = (event.clientY - 140) / scale
+
+        // 为了让元素中心点跟随鼠标，所以不能减去元素全宽高，需要除2
+        component.attr.x = Math.round(offsetX - component.attr.w / 2)
+        component.attr.y = Math.round(offsetY - component.attr.h / 2)
+
+        // 调整组件层级
+        // TODO 暂时不支持智能调整层级
+        component.attr.zIndex = editorComStore.getComponentZindex
+
+        // 每次新增组件的时候选中该组件
+        eventBus.emit('select', { componentId: component.componentId })
+        editorComStore.addComponent(component)
       }
     } catch {
       // TODO
+      console.log('error')
     }
-  };
+  }
 
+  // 拖拽结束
   const dragOver = (ev: any) => {
-    ev.preventDefault();
-    ev.stopPropagation();
-    ev.dataTransfer.dropEffect = 'copy';
-  };
+    ev.preventDefault()
+    ev.stopPropagation()
+    ev.dataTransfer.dropEffect = 'copy'
+  }
+
+  // 点击背景取消选择组件，展示背景参数配置项
+  const cancelSelectCom = () => {
+    eventBus.emit('select', { componentId: 'page' })
+  }
 </script>
 
 <style lang="scss" scoped>

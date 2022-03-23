@@ -1,4 +1,4 @@
-import Components from 'unplugin-vue-components/vite';
+import Components from 'unplugin-vue-components/vite'
 
 export const autoRegistryComponents = () => {
   return Components({
@@ -6,5 +6,5 @@ export const autoRegistryComponents = () => {
     extensions: ['vue'],
     dts: 'src/components.d.ts',
     directoryAsNamespace: true,
-  });
-};
+  })
+}

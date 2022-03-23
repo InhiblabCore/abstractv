@@ -1,3 +1,3 @@
-import VBasicBar from './bar';
+import VBasicBar from './bar'
 
-export { VBasicBar };
+export { VBasicBar }

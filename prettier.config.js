@@ -1,11 +1,11 @@
 module.exports = {
   printWidth: 100,
-  semi: true,
+  // semi: true,
   vueIndentScriptAndStyle: true,
   singleQuote: true,
   trailingComma: 'all',
   proseWrap: 'never',
   htmlWhitespaceSensitivity: 'strict',
   endOfLine: 'auto',
-  // semi: false,
-};
+  semi: false,
+}

@@ -1,5 +1,5 @@
-import { request } from '@/network/axios';
-import { NameType } from './data';
+import { request } from '@/network/axios'
+import { NameType } from './data'
 
 /**
  *
@@ -11,5 +11,5 @@ export async function getName(id: number) {
     params: {
       id,
     },
-  });
+  })
 }

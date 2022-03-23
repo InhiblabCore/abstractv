@@ -52,14 +52,14 @@
 </template>
 
 <script lang="ts" setup>
-  import 'element-plus/es/components/tabs/style/css';
-  import 'element-plus/es/components/tab-pane/style/css';
-  import { ElTabs, ElTabPane } from 'element-plus';
+  import 'element-plus/es/components/tabs/style/css'
+  import 'element-plus/es/components/tab-pane/style/css'
+  import { ElTabs, ElTabPane } from 'element-plus'
 
-  import barCover from '@/assets/components/covers/bar.png';
-  import lineCover from '@/assets/components/covers/line.png';
+  import barCover from '@/assets/components/covers/bar.png'
+  import lineCover from '@/assets/components/covers/line.png'
 
-  const dragRef = ref();
+  const dragRef = ref()
 
   const categories: any = [
     {
@@ -104,15 +104,15 @@
         },
       ],
     },
-  ];
+  ]
 
   // dragStart($event, com.name)
 
   const dragStart = (ev: any, comName: string) => {
-    console.log(ev, comName);
+    console.log(ev, comName)
 
-    ev.dataTransfer.setData('text', comName);
-  };
+    ev.dataTransfer.setData('text', comName)
+  }
 </script>
 <style lang="scss">
   @import './style';

@@ -11,17 +11,17 @@
 <script lang="ts">
   export default {
     name: 'MyData',
-  };
+  }
 </script>
 
 <script lang="ts" setup>
-  import { onMounted } from 'vue';
-  import { useMessage } from 'naive-ui';
-  import { IconMyData } from '@/icons';
+  import { onMounted } from 'vue'
+  import { useMessage } from 'naive-ui'
+  import { IconMyData } from '@/icons'
 
-  const nMessage = useMessage();
+  const nMessage = useMessage()
 
   onMounted(() => {
-    nMessage.warning('建设中。。。');
-  });
+    nMessage.warning('建设中。。。')
+  })
 </script>

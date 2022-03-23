@@ -53,20 +53,20 @@
 <script lang="ts">
   export default {
     name: 'NavHeader',
-  };
+  }
 </script>
 
 <script lang="ts" setup>
-  import { h } from 'vue';
-  import { NIcon } from 'naive-ui';
-  import { IconLogout, IconArrowDown, IconDocument } from '@/icons';
+  import { h } from 'vue'
+  import { NIcon } from 'naive-ui'
+  import { IconLogout, IconArrowDown, IconDocument } from '@/icons'
 
   defineProps({
     isFixed: {
       type: Boolean,
       default: false,
     },
-  });
+  })
 
   const profileOpts = [
     {
@@ -79,7 +79,7 @@
       key: 'logout',
       icon: () => h(NIcon, null, { default: () => h(IconLogout) }),
     },
-  ];
+  ]
 </script>
 
 <style lang="scss">
@@ -224,7 +224,6 @@
       left: 40px;
       user-select: none;
       cursor: pointer;
-
       color: #e6f7ff;
       font-weight: 900;
       font-size: 48px;

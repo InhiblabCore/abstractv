@@ -35,48 +35,48 @@
 </template>
 
 <script lang="ts" setup>
-  import { useMessage } from 'naive-ui';
-  import { IconPlus } from '@/icons';
-  import ProjectList from './ProjectList.vue';
+  import { useMessage } from 'naive-ui'
+  import { IconPlus } from '@/icons'
+  import ProjectList from './ProjectList.vue'
 
-  const selectedGroupId = ref(-1);
-  const loading = ref(false);
-  const adding = ref(false);
-  const nMessage = useMessage();
+  const selectedGroupId = ref(-1)
+  const loading = ref(false)
+  const adding = ref(false)
+  const nMessage = useMessage()
   // const draging = ref(false);
 
   const toggleProject = (id: number) => {
-    selectedGroupId.value = id;
-  };
+    selectedGroupId.value = id
+  }
 
   const onAddInputBlur = (e: any) => {
     if (!adding.value) {
-      return;
+      return
     }
 
-    const name = (e.target.value || '').trim();
+    const name = (e.target.value || '').trim()
     if (!name) {
-      adding.value = false;
+      adding.value = false
     }
-  };
+  }
 
   const addGroup = async (e: any) => {
     if (!adding.value) {
-      return;
+      return
     }
 
-    const name = (e.target.value || '').trim();
+    const name = (e.target.value || '').trim()
     if (name) {
       try {
-        adding.value = false;
+        adding.value = false
         // await createProjectGroup(name);
       } catch (error: any) {
-        nMessage.error(error.message);
+        nMessage.error(error.message)
       }
     } else {
-      adding.value = false;
+      adding.value = false
     }
-  };
+  }
 </script>
 
 <style scoped lang="scss">
