@@ -1,7 +1,7 @@
 <template>
   <div class="canvas-main">
     <div id="canvas-wp" class="canvas-panel-wrap" @mousedown.stop="cancelSelectCom">
-      <div id="canvas-wp" class="canvas-panel-wrap" :style="screenStyle">
+      <div class="screen-shot" :style="screenStyle">
         <align-line />
         <ruler-tool />
         <div
@@ -37,14 +37,12 @@
   import { CSSProperties } from 'vue'
   import backgroundImage from '@/assets/background.png'
   import CanvasContainer from './CanvasContainer.vue'
-  import { useEventEmitter } from 'vue3-hooks-plus'
   import RulerTool from './RulerTool/index.vue'
   import AlignLine from './RulerTool/align-line.vue'
 
   useCanvasScale()
   const editorComStore = useEditorComStore()
   const componentsListDate = computed(() => editorComStore.getComponentsListDate)
-  const eventBus = useEventEmitter({ global: true })
 
   const canvasScale = computed(() => editorComStore.getCanvasScale)
   const canvasHeight = computed(() => editorComStore.getCanvasHeight)
@@ -53,19 +51,24 @@
   // 固定外部宽高
   const screenStyle = computed(() => {
     return {
-      width: editorComStore.page.width,
-      height: editorComStore.page.height,
+      width: canvasWidth.value + 'px',
+      height: canvasHeight.value + 'px',
     } as CSSProperties
   })
+
+  watch(screenStyle, (c) => {
+    console.log(c)
+  })
+  //   console.log();
 
   // canvas等宽缩放
   const canvasStyle = computed(() => {
     return {
       backgroundColor: 'rgba(13,42,67,0)',
       backgroundImage: `url(${backgroundImage})`,
-      height: `${canvasHeight.value}px`,
+      height: `${editorComStore.page.height}px`,
       position: 'absolute',
-      width: `${canvasWidth.value}px`,
+      width: `${editorComStore.page.width}px`,
       transform: `scale(${editorComStore.getCanvasScale}) translate(0px, 0px)`,
     } as CSSProperties
   })
@@ -98,7 +101,7 @@
         component.attr.zIndex = editorComStore.getComponentZindex
 
         // 每次新增组件的时候选中该组件
-        eventBus.emit('select', { componentId: component.componentId })
+        editorComStore.selectComponentActive(component.componentId)
         editorComStore.addComponent(component)
       }
     } catch {
@@ -116,7 +119,7 @@
 
   // 点击背景取消选择组件，展示背景参数配置项
   const cancelSelectCom = () => {
-    eventBus.emit('select', { componentId: 'page' })
+    editorComStore.cancelComponentSelect('page')
   }
 </script>
 

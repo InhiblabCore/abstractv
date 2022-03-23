@@ -1,5 +1,5 @@
 <template>
-  <div class="g-aside component-panel-wp">
+  <div :class="['g-aside component-panel-wp', { '--hide': !visiblePanel }]">
     <div class="components-panel">
       <div class="components-panel-wrapper">
         <el-tabs tab-position="left">
@@ -58,8 +58,13 @@
 
   import barCover from '@/assets/components/covers/bar.png'
   import lineCover from '@/assets/components/covers/line.png'
+  import { useToolStore } from '@/store/modules/tool'
 
   const dragRef = ref()
+
+  const toolStore = useToolStore()
+
+  const visiblePanel = computed(() => toolStore.getComponentsShow)
 
   const categories: any = [
     {

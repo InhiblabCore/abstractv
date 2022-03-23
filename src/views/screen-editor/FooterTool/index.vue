@@ -1,5 +1,38 @@
 <template>
   <div class="g-footer bottom-sider">
+    <n-popover
+      :width="235"
+      placement="top"
+      trigger="hover"
+      raw
+      :style="{
+        '--n-color': 'var(--datav-component-bg)',
+      }"
+    >
+      <template #trigger>
+        <n-icon class="shortcut-btn">
+          <IconKeyboard />
+        </n-icon>
+      </template>
+      <div class="shortcut-wp">
+        <div class="shortcut-item">
+          <div class="shortcut-title">开关图层面板</div>
+          <div class="shortcut-value">Ctrl/Cmd + ←</div>
+        </div>
+        <div class="shortcut-item">
+          <div class="shortcut-title">切换组件面板</div>
+          <div class="shortcut-value">Ctrl/Cmd + ↑</div>
+        </div>
+        <div class="shortcut-item">
+          <div class="shortcut-title">切换右侧面板</div>
+          <div class="shortcut-value">Ctrl/Cmd + →</div>
+        </div>
+        <div class="shortcut-item">
+          <div class="shortcut-title">画布缩放到最佳位置</div>
+          <div class="shortcut-value">Ctrl/Cmd + a</div>
+        </div>
+      </div>
+    </n-popover>
     <div class="scale-input-wp">
       <input v-model="scale" type="number" class="scale-input" @keydown.enter="submitScale(0)" />
       <span class="percent">%</span>
@@ -45,7 +78,7 @@
 
 <script lang="ts" setup>
   import useCanvasScale from '@/hooks/useCanvasScale'
-  import { IconArrowDown } from '@/icons'
+  import { IconArrowDown, IconKeyboard } from '@/icons'
   import { useEditorComStore } from '@/store/modules/editorCom'
   const scaleList = [
     { label: '200%', value: 200 },
@@ -59,8 +92,6 @@
   const scale = computed(() => parseInt((editorComStore.getCanvasScale * 100).toFixed(2)))
 
   const submitScale = async (val: number) => {
-    console.log(val)
-
     if (val === -1) autoScale()
     else editorComStore.setCanvasScale(val / 100)
   }
@@ -107,6 +138,7 @@
         color: var(--datav-font-color);
         text-align: right;
         background: transparent;
+        user-select: none;
         caret-color: var(--datav-font-color);
 
         &::-webkit-inner-spin-button,

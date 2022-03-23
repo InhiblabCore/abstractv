@@ -1,3 +1,4 @@
+import barCover from '@/assets/components/covers/bar.png'
 export default function createComponent(name: string) {
   switch (name) {
     case 'BasicBar':
@@ -8,7 +9,10 @@ export default function createComponent(name: string) {
         locked: false,
         hided: false,
         hovered: false,
-        componentId: Math.floor(Math.random() * 100),
+        componentId: Math.floor(Math.random() * 100000),
+        icon: 'v-icon-chart-bar',
+        img: barCover,
+        alias: '柱状图',
       }
 
     default:

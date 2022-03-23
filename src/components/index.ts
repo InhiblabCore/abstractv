@@ -1,15 +1,15 @@
-import { VBasicBar } from './material';
+import { VBasicBar } from './material'
 
-import type { App } from 'vue';
+import type { App } from 'vue'
 
-const components = [VBasicBar];
+const components = [VBasicBar]
 
 const install = (app: App): void => {
   components.forEach((component) => {
-    app.use(component);
-  });
-};
+    app.use(component)
+  })
+}
 
 export default {
   install,
-};
+}

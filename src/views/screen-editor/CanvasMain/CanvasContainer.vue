@@ -26,13 +26,12 @@
 
 <script lang="ts" setup>
   import { useEditorComStore } from '@/store/modules/editorCom'
-  import { useEventEmitter, useHover } from 'vue3-hooks-plus'
+  import { useHover } from 'vue3-hooks-plus'
   import { handleMove } from './utils'
   import ControlPoint from './ControlPoint.vue'
   import ReferLine from './refer-line.vue'
 
   const editorComStore = useEditorComStore()
-  const event = useEventEmitter({ global: true })
   const instance = getCurrentInstance()
   const props = defineProps<{
     component: {
@@ -50,12 +49,6 @@
       componentId: string
     }
   }>()
-
-  event.useSubscription('select', (data: any) => {
-    const id = data?.params?.[0]?.componentId
-    if (id === props.component.componentId) editorComStore.setComponentSelect(props.component)
-    else editorComStore.cancelComponentSelect(props.component)
-  })
 
   const containScaleRef = ref()
   const mouseIsHover = useHover(containScaleRef)
@@ -101,7 +94,9 @@
     if (props.component.selected) {
       return
     }
-    event.emit('select', { componentId: props.component.componentId })
+
+    editorComStore.selectComponentActive(props.component.componentId)
+    // event.emit('select', { componentId: props.component.componentId })
   }
 
   const onMove = (e: MouseEvent) => {

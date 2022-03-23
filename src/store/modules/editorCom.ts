@@ -76,11 +76,19 @@ export const useEditorComStore = defineStore('editor-com', {
     selectComponent(id: string) {
       return this.componentsListDate.find((com) => com.componentId === id)
     },
+
+    selectComponentActive(id: string) {
+      this.componentsListDate.forEach((com) => {
+        if (com.componentId === id) com.selected = true
+        else com.selected = false
+        com.hovered = false
+      })
+    },
     setComponentSelect(component: any) {
       component.selected = true
     },
-    cancelComponentSelect(component: any) {
-      component.selected = false
+    cancelComponentSelect(id: string) {
+      this.selectComponentActive(id)
     },
 
     setComponentHover(hover: boolean, id: string) {
