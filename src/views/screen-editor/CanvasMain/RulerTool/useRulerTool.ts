@@ -279,11 +279,11 @@ export default function useRulerTool(options?: ComputedRef<RulerOption>) {
   }
 
   useEventListener('mouseenter', constructIndicator, {
-    target: container,
+    target: canvas,
   })
 
   useEventListener('mousedown', createGuideLine, {
-    target: container,
+    target: canvas,
   })
 
   return { container, createArithmeticScale, setSize, setScale, toggleGuide, destroy, clearGuides }
