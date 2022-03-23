@@ -2,6 +2,7 @@
   <div class="canvas-main">
     <div id="canvas-wp" class="canvas-panel-wrap" @mousedown.stop="cancelSelectCom">
       <div id="canvas-wp" class="canvas-panel-wrap" :style="screenStyle">
+        <ruler-tool />
         <div
           id="canvas-coms"
           class="canvas-panel"
@@ -16,6 +17,7 @@
           >
             <component
               :is="component.name"
+              :component="component"
               :style="{
                 transform: 'translateZ(0px)',
                 opacity: 1,
@@ -35,13 +37,14 @@
   import backgroundImage from '@/assets/background.png'
   import CanvasContainer from './CanvasContainer.vue'
   import { useEventEmitter } from 'vue3-hooks-plus'
+  import RulerTool from './RulerTool/index.vue'
 
   const editorComStore = useEditorComStore()
-
   const componentsListDate = computed(() => editorComStore.getComponentsListDate)
   const eventBus = useEventEmitter({ global: true })
-
   const { canvasScale, pageHeight, pageWidth, canvasHeight, canvasWidth } = useCanvasScale()
+
+  // 固定外部宽高
   const screenStyle = computed(() => {
     return {
       width: pageWidth,
@@ -49,6 +52,7 @@
     } as CSSProperties
   })
 
+  // canvas等宽缩放
   const canvasStyle = computed(() => {
     return {
       backgroundColor: 'rgba(13,42,67,0)',
@@ -68,16 +72,27 @@
 
       if (name) {
         // ToolbarModule.addLoading();
+        // 创建一个组件
         let component: any = await createComponent(name)
+
+        // 获取缩放
         const scale = canvasScale.value
 
+        // X方向减去左边的工具宽度 加 画布间隙
         const offsetX = (event.clientX - 384) / scale
+
+        // y方向减去顶部的工具宽度 加 画布间隙
         const offsetY = (event.clientY - 140) / scale
 
+        // 为了让元素中心点跟随鼠标，所以不能减去元素全宽高，需要除2
         component.attr.x = Math.round(offsetX - component.attr.w / 2)
         component.attr.y = Math.round(offsetY - component.attr.h / 2)
+
+        // 调整组件层级
+        // TODO 暂时不支持智能调整层级
         component.attr.zIndex = editorComStore.getComponentZindex
 
+        // 每次新增组件的时候选中该组件
         eventBus.emit('select', { componentId: component.componentId })
         editorComStore.addComponent(component)
       }
@@ -86,12 +101,14 @@
     }
   }
 
+  // 拖拽结束
   const dragOver = (ev: any) => {
     ev.preventDefault()
     ev.stopPropagation()
     ev.dataTransfer.dropEffect = 'copy'
   }
 
+  // 点击背景取消选择组件，展示背景参数配置项
   const cancelSelectCom = () => {
     eventBus.emit('select', { componentId: 'page' })
   }

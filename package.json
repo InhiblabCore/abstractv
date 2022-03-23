@@ -39,7 +39,10 @@
     "vue-i18n": "^9.1.9",
     "vue-router": "4",
     "vue3-hooks-plus": "^2.2.7",
-    "vuex": "^4.0.2"
+    "vuex": "^4.0.2",
+     "vue-echarts": "^6.0.0",
+     "echarts": "^5.2.2",
+    "echarts-wordcloud": "^2.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^15.0.0",

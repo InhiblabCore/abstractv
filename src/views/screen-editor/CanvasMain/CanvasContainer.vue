@@ -1,5 +1,6 @@
 <template>
   <div class="canvas-container" :style="CanvasContainerStyle" :class="canvasContainerClass">
+    <refer-line v-if="component.selected" :attr="component.attr" :scale="scale" />
     <div
       :class="['datav-scale', { hovered: isHover }]"
       :style="hideStyle"
@@ -29,6 +30,8 @@
   import { useEventEmitter, useHover } from 'vue3-hooks-plus'
   import { handleMove } from './utils'
   import ControlPoint from './ControlPoint.vue'
+  import ReferLine from './refer-line.vue'
+
   const editorComStore = useEditorComStore()
   const event = useEventEmitter({ global: true })
   const instance = getCurrentInstance()

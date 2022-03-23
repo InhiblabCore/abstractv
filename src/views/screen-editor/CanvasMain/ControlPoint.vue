@@ -21,7 +21,7 @@
 
 <script lang="ts" setup>
   import { CSSProperties } from 'vue'
-  import { Direction, getCursors, handleRotate } from './utils'
+  import { Direction, getCursors, handleRotate, handleZoom } from './utils'
 
   const props = defineProps<{
     component: any
@@ -85,7 +85,9 @@
   }
   const onZoom = (ev: MouseEvent, dir: Direction) => {
     props.selectCom()
-    console.log(ev, dir)
+    // console.log(ev, dir)
+
+    handleZoom(ev, dir, props.component, props.scale)
 
     //   handleZoom(ev, dir, props.com, scale.value);
   }

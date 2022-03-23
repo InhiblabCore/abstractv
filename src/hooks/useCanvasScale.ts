@@ -14,6 +14,7 @@ export default function useCanvasScale(options?: { useWidthHeightMini?: boolean 
     const scale = useWidthHeightMini
       ? Math.min(window.innerWidth - 440, window.innerHeight / height)
       : (window.innerWidth - 440) / width
+
     canvasHeight.value = height - 100
     canvasWidth.value = width
     canvasScale.value = scale
