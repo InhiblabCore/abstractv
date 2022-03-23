@@ -1,4 +1,4 @@
-import type { GlobalTheme, GlobalThemeOverrides } from 'naive-ui'
+import type { GlobalTheme, GlobalThemeOverrides } from 'naive-ui';
 
 const vars: Partial<GlobalTheme['common']> = {
   fontFamily: "'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif !important",
@@ -20,7 +20,7 @@ const vars: Partial<GlobalTheme['common']> = {
   boxShadow1: 'none',
   boxShadow2: 'none',
   boxShadow3: 'none',
-}
+};
 
 const vars2 = {
   darkColor: '#262c33',
@@ -37,13 +37,14 @@ const vars2 = {
   guiBgColorDark: '#111417',
   bgColor1: '#0b0c0d',
   bgColor2: '#1d262e',
-}
+};
 
 const themeOverrides: GlobalThemeOverrides = {
   common: {
     ...vars,
   },
-  Button: { // small 和 medium 一样大
+  Button: {
+    // small 和 medium 一样大
     fontWeight: '700',
 
     iconSizeTiny: '12px',
@@ -283,8 +284,6 @@ const themeOverrides: GlobalThemeOverrides = {
     tabTextColorHoverCard: vars.primaryColorHover,
     tabTextColorActiveCard: vars.primaryColorHover,
   },
-}
+};
 
-export {
-  themeOverrides,
-}
+export { themeOverrides };
