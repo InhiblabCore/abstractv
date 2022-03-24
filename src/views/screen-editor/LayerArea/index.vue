@@ -26,7 +26,7 @@
         </div>
       </div>
       <div class="layer-manager-wrap">
-        <template v-for="com in components" :key="com.componentId">
+        <template v-for="com in components" :key="com.id">
           <div
             v-if="showText"
             :title="com.alias"
@@ -39,7 +39,7 @@
                 selected: com.selected,
               },
             ]"
-            @mousedown="selectComponent(com.componentId)"
+            @mousedown="selectComponent(com.id)"
             @mouseenter="com.hovered = true"
             @mouseleave="com.hovered = false"
           >
@@ -74,7 +74,7 @@
                 selected: com.selected,
               },
             ]"
-            @mousedown="selectComponent(com.componentId)"
+            @mousedown="selectComponent(com.id)"
             @mouseenter="com.hovered = true"
             @mouseleave="com.hovered = false"
           >
@@ -115,13 +115,16 @@
 <script lang="ts" setup>
   import { useEditorComStore } from '@/store/modules/editorCom'
   import { useToolStore } from '@/store/modules/tool'
+  import _ from 'lodash-es'
   import { IconViewList, IconViewGrid, IconBack, IconLock, IconHide } from '@/icons'
 
   const toolStore = useToolStore()
   const editorComStore = useEditorComStore()
   const showText = ref(false)
 
-  const components = computed(() => (editorComStore.getComponentsListDate as any[])?.reverse())
+  const components = computed(() => {
+    return (_.clone(editorComStore.getComponentsListDate) as any[]).reverse()
+  })
   const visiblePanel = computed(() => toolStore.getLayerShow)
 
   const changeVisible = () => {

@@ -7,6 +7,9 @@ type ToolType = {
   components: {
     show: boolean
   }
+  config: {
+    show: boolean
+  }
 
   loading: number
 }
@@ -20,6 +23,9 @@ export const useToolStore = defineStore('tool', {
       components: {
         show: true,
       },
+      config: {
+        show: false,
+      },
       loading: 300,
     }
   },
@@ -32,6 +38,9 @@ export const useToolStore = defineStore('tool', {
     },
     getLoading(): number {
       return this.loading
+    },
+    getConfigShow(): boolean {
+      return this.config.show
     },
   },
   actions: {},

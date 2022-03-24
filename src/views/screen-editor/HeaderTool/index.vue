@@ -1,5 +1,27 @@
 <template>
   <div class="header-container">
+    <div class="head-btn-group view-btn-group">
+      <n-tooltip :delay="500">
+        <template #trigger>
+          <div class="head-btn --selected">
+            <n-icon class="head-btn-icon">
+              <IconEditorCanvas />
+            </n-icon>
+          </div>
+        </template>
+        画布编辑器
+      </n-tooltip>
+      <n-tooltip :delay="500">
+        <template #trigger>
+          <div class="head-btn --disabled">
+            <n-icon class="head-btn-icon">
+              <IconNodal />
+            </n-icon>
+          </div>
+        </template>
+        蓝图编辑器
+      </n-tooltip>
+    </div>
     <div class="datav-edit-header">
       <div class="editor-header-wp">
         <div class="editor-config">
@@ -26,25 +48,53 @@
             </template>
             组件列表
           </n-tooltip>
+          <n-tooltip :delay="500">
+            <template #trigger>
+              <div :class="['head-btn mr4', { '--selected': config }]" @click="changeConfigPanel">
+                <n-icon class="head-btn-icon">
+                  <IconRpanel />
+                </n-icon>
+              </div>
+            </template>
+            右侧面板
+          </n-tooltip>
         </div>
+      </div>
+      <div class="screen-info">
+        <n-icon class="workspace-icon">
+          <IconWorkspace />
+        </n-icon>
+        <span>{{ 'AbstaractV 空间 - test' }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { IconBox, IconLayer } from '@/icons'
+  import {
+    IconBox,
+    IconRpanel,
+    IconLayer,
+    IconEditorCanvas,
+    IconNodal,
+    IconWorkspace,
+  } from '@/icons'
   import { useToolStore } from '@/store/modules/tool'
 
   const toolStore = useToolStore()
   const components = computed(() => toolStore.getComponentsShow)
   const layer = computed(() => toolStore.getLayerShow)
+  const config = computed(() => toolStore.getConfigShow)
 
   const changeLayerPanel = () => {
     toolStore.layer.show = !layer.value
   }
   const changeComponentsPanel = () => {
     toolStore.components.show = !components.value
+  }
+
+  const changeConfigPanel = () => {
+    toolStore.config.show = !config.value
   }
 </script>
 

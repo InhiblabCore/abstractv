@@ -13,17 +13,16 @@ export default function useCanvasScale(options?: { useWidthHeightMini?: boolean 
   const handleScale = () => {
     const scale = useWidthHeightMini
       ? Math.min(window.innerWidth - 640, window.innerHeight / height)
-      : (window.innerWidth - 627) / width
+      : (window.innerWidth - (627 + 122 + 10)) / width
 
     editorComStore.setCanvasScale(scale)
   }
-
   useEventListener('resize', () => handleScale())
 
   watchEffect(() => {
     if (editorComStore.getCanvasScale) {
-      let width_ = document.documentElement.clientWidth - 624
-      let height_ = document.documentElement.clientHeight - 100
+      let width_ = document.documentElement.clientWidth - (627 + 10 + 122)
+      let height_ = document.documentElement.clientHeight - 72
 
       const deltaW = editorComStore.page.width * editorComStore.getCanvasScale
       const deltaH = editorComStore.page.height * editorComStore.getCanvasScale

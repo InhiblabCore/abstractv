@@ -46,7 +46,7 @@
       locked: boolean
       hided: boolean
       hovered: boolean
-      componentId: string
+      id: string
     }
   }>()
 
@@ -54,8 +54,7 @@
   const mouseIsHover = useHover(containScaleRef)
 
   watch(mouseIsHover, (b) => {
-    if (b) editorComStore.setComponentHover(true, props.component.componentId)
-    else editorComStore.cancelComponentHover(false, props.component.componentId)
+    editorComStore.setComponentHover(b, props.component.id)
   })
 
   const isHover = computed(() => props.component.hovered)
@@ -94,9 +93,7 @@
     if (props.component.selected) {
       return
     }
-
-    editorComStore.selectComponentActive(props.component.componentId)
-    // event.emit('select', { componentId: props.component.componentId })
+    editorComStore.selectComponentActive(props.component.id)
   }
 
   const onMove = (e: MouseEvent) => {

@@ -234,7 +234,7 @@
       width: 20px;
       height: 20px;
       font-size: 16px;
-      color: var(--datav-font-color);
+      color: var(--abstractv-font-color);
       cursor: pointer;
       background: var(--datav-data-form-bgcolor);
       border-right: $line-border-3;

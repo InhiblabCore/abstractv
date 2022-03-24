@@ -77,7 +77,7 @@
     event.preventDefault()
 
     try {
-      const name = event.dataTransfer.getData('text')
+      const name = (event.dataTransfer.getData('text') as string).replace('V', '')
       if (name) {
         // ToolbarModule.addLoading();
         // 创建一个组件
@@ -101,8 +101,8 @@
         component.attr.zIndex = editorComStore.getComponentZindex
 
         // 每次新增组件的时候选中该组件
-        editorComStore.selectComponentActive(component.componentId)
         editorComStore.addComponent(component)
+        editorComStore.selectComponentActive(component.id)
       }
     } catch {
       // TODO

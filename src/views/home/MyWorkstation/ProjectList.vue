@@ -43,21 +43,21 @@
 <script lang="ts">
   export default {
     name: 'ProjectList',
-  };
+  }
 </script>
 
 <script lang="ts" setup>
-  import { ref, PropType, provide } from 'vue';
+  import { ref, PropType, provide } from 'vue'
   // import { sortBy } from 'lodash-es';
   //   import { ProjectGroup } from '@/domains/project';
   // import { IconSearch, IconArrowDown } from '@/icons';
 
-  import NewProject from '@/assets/home/images/new-project.png';
+  import NewProject from '@/assets/home/images/new-project.png'
   // import MyScreen from './my-screen.vue';
   // import PublishScreen from './publish-screen.vue';
   defineProps({
     group: Object as PropType<any>,
-  });
+  })
 
   // const searchText = ref('');
   // const sort = ref('name');
@@ -67,8 +67,8 @@
   //   updateAt: '按修改时间排序',
   // };
   // const sortOpts = Object.entries(sorts).map(([key, label]) => ({ key, label }));
-  const visiblePublish = ref(false);
-  const publishAppId = ref(0);
+  const visiblePublish = ref(false)
+  const publishAppId = ref(0)
 
   // const group = toRef(props, 'group');
 
@@ -87,9 +87,9 @@
   // });
 
   provide('publish', (appId: number) => {
-    visiblePublish.value = true;
-    publishAppId.value = appId;
-  });
+    visiblePublish.value = true
+    publishAppId.value = appId
+  })
 </script>
 
 <style lang="scss" scoped>
@@ -219,7 +219,7 @@
 
       .icon-search {
         padding: 0 40px 0 4px;
-        color: var(--datav-font-color);
+        color: var(--abstractv-font-color);
         cursor: pointer;
         z-index: 1;
       }
@@ -228,7 +228,7 @@
         @include utils-ellipsis;
 
         display: inline-block;
-        color: var(--datav-font-color);
+        color: var(--abstractv-font-color);
         line-height: 30px;
         cursor: pointer;
         font-size: 14px;

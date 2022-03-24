@@ -63,7 +63,7 @@ export const calcIntersectingLines = (
   for (let i = 0, len = coms.length; i < len; i++) {
     const com = coms[i]
 
-    if (com.componentId === target.componentId || com.hided) {
+    if (com.id === target.id || com.hided) {
       continue
     }
 

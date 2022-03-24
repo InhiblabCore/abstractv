@@ -64,21 +64,31 @@
       </n-popover>
     </div>
     <div class="scale-slider-wp">
-      <n-slider
-        v-model:value="scale"
-        :min="10"
-        :max="200"
-        :step="5"
-        :tooltip="false"
-        @update:value="submitScale"
-      />
+      <div class="btn" @click="changeScale(-1)">
+        <i class="base-icon"> - </i>
+      </div>
+      <div class="silder">
+        <n-slider
+          v-model:value="scale"
+          :min="10"
+          :max="200"
+          :step="5"
+          :tooltip="false"
+          @update:value="submitScale"
+        />
+      </div>
+      <div class="btn" @click="changeScale(1)">
+        <i class="base-plus-icon">
+          <IconPlus style="width: 100%; height: 100%" />
+        </i>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
   import useCanvasScale from '@/hooks/useCanvasScale'
-  import { IconArrowDown, IconKeyboard } from '@/icons'
+  import { IconArrowDown, IconKeyboard, IconPlus } from '@/icons'
   import { useEditorComStore } from '@/store/modules/editorCom'
   const scaleList = [
     { label: '200%', value: 200 },
@@ -94,6 +104,10 @@
   const submitScale = async (val: number) => {
     if (val === -1) autoScale()
     else editorComStore.setCanvasScale(val / 100)
+  }
+
+  const changeScale = async (val: number) => {
+    if (scale.value > 10) editorComStore.setCanvasScale((scale.value + val) / 100)
   }
 </script>
 
@@ -135,11 +149,11 @@
         width: 27px;
         padding-left: 5px;
         font-size: 12px;
-        color: var(--datav-font-color);
+        color: var(--abstractv-font-color);
         text-align: right;
         background: transparent;
         user-select: none;
-        caret-color: var(--datav-font-color);
+        caret-color: var(--abstractv-font-color);
 
         &::-webkit-inner-spin-button,
         &::-webkit-outer-spin-button {
@@ -163,7 +177,44 @@
     }
 
     .scale-slider-wp {
-      width: 190px;
+      display: flex;
+      width: 216px;
+
+      .silder {
+        flex: 1;
+      }
+
+      .btn {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+
+        .base-plus-icon {
+          height: 1em;
+          width: 1em;
+          line-height: 1em;
+          text-align: center;
+          display: inline-block;
+          position: relative;
+          fill: currentColor;
+          background-color: #262b33;
+          transform: translateY(-1px) translateX(6px) translateZ(0);
+          cursor: pointer;
+        }
+
+        .base-icon {
+          height: 1em;
+          width: 1em;
+          line-height: 1em;
+          text-align: center;
+          display: inline-block;
+          position: relative;
+          fill: currentColor;
+          background-color: #262b33;
+          transform: translateY(-1px) translateX(-6px) translateZ(0);
+          cursor: pointer;
+        }
+      }
     }
   }
 

@@ -22,8 +22,12 @@ type EditorType = {
   page: {
     width: number
     height: number
+    bgcolor: string
   }
   alignLine: AlignLine
+  contextMenu: {
+    show: boolean
+  }
 }
 
 export const useEditorComStore = defineStore('editor-com', {
@@ -38,6 +42,7 @@ export const useEditorComStore = defineStore('editor-com', {
       page: {
         width: 1920,
         height: 1080,
+        bgcolor: 'rgba(255,255,255,0)',
       },
       minCanvasScale: 0.2,
       alignLine: {
@@ -50,6 +55,9 @@ export const useEditorComStore = defineStore('editor-com', {
         vertical: 0,
         horizontal: 0,
       },
+      contextMenu: {
+        show: false,
+      },
     }
   },
   getters: {
@@ -58,6 +66,9 @@ export const useEditorComStore = defineStore('editor-com', {
     },
     getComponentZindex(): number {
       return this.componentsListDate.length
+    },
+    getSelectComponent(): any {
+      return this.componentsListDate.find((com) => com.selected === true)
     },
     getCanvasScale(): number {
       return this.canvas.scale
@@ -74,12 +85,12 @@ export const useEditorComStore = defineStore('editor-com', {
       this.componentsListDate.push(component)
     },
     selectComponent(id: string) {
-      return this.componentsListDate.find((com) => com.componentId === id)
+      return this.componentsListDate.find((com) => com.id === id)
     },
 
     selectComponentActive(id: string) {
       this.componentsListDate.forEach((com) => {
-        if (com.componentId === id) com.selected = true
+        if (com.id === id) com.selected = true
         else com.selected = false
         com.hovered = false
       })
@@ -92,12 +103,8 @@ export const useEditorComStore = defineStore('editor-com', {
     },
 
     setComponentHover(hover: boolean, id: string) {
-      const component = this.selectComponent(id)
-      component.hovered = hover
-    },
-    cancelComponentHover(hover: boolean, id: string) {
-      const component = this.selectComponent(id)
-      component.hovered = hover
+      if (this.selectComponent(id).hovered === hover) return
+      this.selectComponent(id).hovered = hover
     },
 
     setCanvasScale(scale: number) {

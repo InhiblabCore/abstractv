@@ -6,16 +6,15 @@
     <div id="edit-main-wp" class="g-layout edit-main-wp">
       <layer-area />
       <MaterialArea />
-      <!-- <components-panel /> -->
       <!-- <filter-manager-drawer /> -->
       <div class="g-layout edit-main text-white">
         <!-- <toolbox-panel /> -->
         <g-loading :spinning="false">
-          <CanvasMain />
+          <canvas-main />
         </g-loading>
         <footer-tool />
       </div>
-      <!-- <ConfigPanel /> -->
+      <config-tool />
     </div>
   </div>
   <!-- <editor-context-menu /> -->
@@ -24,7 +23,7 @@
 <script lang="ts" setup>
   import HeaderTool from './HeaderTool/index.vue'
   import MaterialArea from './MaterialArea/index.vue'
-  // import ConfigPanel from './ConfigPanel/index.vue';
+  import ConfigTool from './ConfigTool/index.vue'
   import LayerArea from './LayerArea/index.vue'
   import FooterTool from './FooterTool/index.vue'
   import CanvasMain from './CanvasMain/index.vue'
