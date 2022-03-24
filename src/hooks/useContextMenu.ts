@@ -36,7 +36,6 @@ export const useContextMenu = (opts?: { beforeClose?: Function }) => {
   }
 
   const hideMenu = () => {
-    off(document, 'click', hideMenu)
     document.removeEventListener('click', hideMenu)
     if (opts && opts.beforeClose) {
       opts.beforeClose()
