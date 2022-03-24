@@ -225,11 +225,13 @@ export class BasicBar extends AbstractvComponent {
     },
   }
 
+  // @ts-ignore
   apis: Partial<any>
+  // @ts-ignore
   apiData: Partial<any>
-
+  // @ts-ignore
   events: Record<string, any>
-
+  // @ts-ignore
   actions: Record<string, any>
 
   constructor() {
@@ -244,6 +246,9 @@ export class BasicBar extends AbstractvComponent {
     //   createField('y', { description: '值' }),
     // ]
 
+    this.apis = {}
+    this.apiData = {}
+    this.events = {}
     // this.apis = initApiConfig({
     //   fields: Object.assign({}, ...fields),
     //   description: '基本柱状图接口',
