@@ -1,3 +1,4 @@
+import { AbstractvComponent } from '@/components/componentFactory'
 import { calcIntersectingLines } from '@/utils/intersecting-line-util'
 import { defineStore } from 'pinia'
 
@@ -12,7 +13,7 @@ export type AlignLine = {
   show: boolean
 }
 type EditorType = {
-  componentsListDate: any[]
+  componentsListDate: AbstractvComponent[]
   minCanvasScale: number
   canvas: {
     scale: number
@@ -103,8 +104,8 @@ export const useEditorComStore = defineStore('editor-com', {
     },
 
     setComponentHover(hover: boolean, id: string) {
-      if (this.selectComponent(id).hovered === hover) return
-      this.selectComponent(id).hovered = hover
+      if (this.selectComponent(id)?.hovered === hover) return
+      else this.selectComponent(id)!.hovered = hover
     },
 
     setCanvasScale(scale: number) {

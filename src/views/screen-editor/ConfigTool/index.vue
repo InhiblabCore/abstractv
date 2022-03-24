@@ -14,6 +14,7 @@
               配置
             </n-tooltip>
           </template>
+          <ComponentConfig />
           <!-- <setting-panel :key="selectedComponent.id" /> -->
         </n-tab-pane>
         <n-tab-pane name="data" display-directive="show:lazy">
@@ -53,15 +54,15 @@
   import { IconSetting, IconCloud, IconInteract } from '@/icons'
 
   import PageConfig from './PageConfig.vue'
+  import ComponentConfig from './ComponentConfig.vue'
 
   const toolStore = useToolStore()
   const editorStore = useEditorComStore()
   const visiblePanel = computed(() => toolStore.getConfigShow)
-  console.log(visiblePanel)
-  console.log(666)
 
   const selectedComponent = computed(() => editorStore.getSelectComponent)
 
+  provide('component', selectedComponent)
   watch(selectedComponent, (c) => {
     console.log(c)
   })

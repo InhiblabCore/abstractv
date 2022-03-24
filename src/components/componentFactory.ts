@@ -19,6 +19,7 @@ export type ComponentAttr = {
   opacity: number
   filpV: boolean
   filpH: boolean
+  zIndex: number
 }
 
 export abstract class AbstractvComponent {
@@ -48,6 +49,7 @@ export abstract class AbstractvComponent {
     opacity: 1,
     filpV: false,
     filpH: false,
+    zIndex: 0,
   }
 
   projectId = 0

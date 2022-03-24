@@ -39,6 +39,7 @@
   import CanvasContainer from './CanvasContainer.vue'
   import RulerTool from './RulerTool/index.vue'
   import AlignLine from './RulerTool/align-line.vue'
+  import { AbstractvComponent } from '@/components/componentFactory'
 
   useCanvasScale()
   const editorComStore = useEditorComStore()
@@ -64,7 +65,7 @@
   // canvas等宽缩放
   const canvasStyle = computed(() => {
     return {
-      backgroundColor: 'rgba(13,42,67,0)',
+      backgroundColor: editorComStore.page.bgcolor,
       backgroundImage: `url(${backgroundImage})`,
       height: `${editorComStore.page.height}px`,
       position: 'absolute',
@@ -81,7 +82,7 @@
       if (name) {
         // ToolbarModule.addLoading();
         // 创建一个组件
-        let component: any = await createComponent(name)
+        let component: AbstractvComponent = await createComponent(name)!
 
         // 获取缩放
         const scale = canvasScale.value
