@@ -10,7 +10,11 @@
       <div class="transform-handler" :class="handlerClass" :style="handlerStyle">
         <div class="datav-com">
           <slot></slot>
-          <div class="datav-wrapper-event-disable" :style="wrapperStyle"></div>
+          <div
+            class="datav-wrapper-event-disable"
+            :style="wrapperStyle"
+            @contextmenu="showMenu"
+          ></div>
         </div>
         <ControlPoint
           :component="component"
@@ -30,8 +34,10 @@
   import { handleMove } from './utils'
   import ControlPoint from './ControlPoint.vue'
   import ReferLine from './refer-line.vue'
+  import { useContextMenu } from '@/hooks/useContextMenu'
 
   const editorComStore = useEditorComStore()
+  const { showMenu } = useContextMenu()
   const instance = getCurrentInstance()
   const props = defineProps<{
     component: {

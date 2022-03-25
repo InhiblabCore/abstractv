@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid'
 import { getVisualizeComponent } from './config/componentConfig'
 
-const generateId = (name: string) => {
+export const generateId = (name: string) => {
   return `${name}_${nanoid()}`
 }
 export enum ComType {

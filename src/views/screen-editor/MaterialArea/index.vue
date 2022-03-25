@@ -67,8 +67,6 @@
 
   const visiblePanel = computed(() => toolStore.getComponentsShow)
 
-  console.log(visualizeListComponents)
-
   //   const categories: any = [
   //     {
   //       type: 'chart',
@@ -117,8 +115,6 @@
   // dragStart($event, com.name)
 
   const dragStart = (ev: any, comName: string) => {
-    console.log(ev, comName)
-
     ev.dataTransfer.setData('text', comName)
   }
 </script>

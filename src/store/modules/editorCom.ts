@@ -1,6 +1,9 @@
-import { AbstractvComponent } from '@/components/componentFactory'
+import { AbstractvComponent, ComType, generateId } from '@/components/componentFactory'
+import { MoveType } from '@/utils/enums'
 import { calcIntersectingLines } from '@/utils/intersecting-line-util'
 import { defineStore } from 'pinia'
+import _ from 'lodash-es'
+import { nanoid } from 'nanoid'
 
 export type AlignLine = {
   top: number
@@ -29,12 +32,14 @@ type EditorType = {
   contextMenu: {
     show: boolean
   }
+  subComponents: AbstractvComponent[]
 }
 
 export const useEditorComStore = defineStore('editor-com', {
   state: (): EditorType => {
     return {
       componentsListDate: [],
+      subComponents: [],
       canvas: {
         scale: 0.2,
         width: 1920,
@@ -82,10 +87,11 @@ export const useEditorComStore = defineStore('editor-com', {
     },
   },
   actions: {
+    // component
     addComponent(component: any) {
       this.componentsListDate.push(component)
     },
-    selectComponent(id: string) {
+    getComponent(id: string) {
       return this.componentsListDate.find((com) => com.id === id)
     },
 
@@ -96,18 +102,75 @@ export const useEditorComStore = defineStore('editor-com', {
         com.hovered = false
       })
     },
-    setComponentSelect(component: any) {
-      component.selected = true
+    setComponentLocked(id: string, locked: boolean) {
+      this.getComponent(id)!.locked = locked
     },
-    cancelComponentSelect(id: string) {
-      this.selectComponentActive(id)
+    setComponentHided(id: string, hided: boolean) {
+      this.getComponent(id)!.hided = hided
     },
-
     setComponentHover(hover: boolean, id: string) {
-      if (this.selectComponent(id)?.hovered === hover) return
-      else this.selectComponent(id)!.hovered = hover
+      if (this.getComponent(id)?.hovered === hover) return
+      else this.getComponent(id)!.hovered = hover
+    },
+    moveComponent({ id, moveType }: { id: string; moveType: MoveType }) {
+      const i = this.componentsListDate.findIndex((com) => com.id === id)
+      if (moveType === MoveType.up) {
+        if (i + 1 < this.componentsListDate.length) {
+          this.componentsListDate.splice(i + 1, 0, ...this.componentsListDate.splice(i, 1))
+        }
+      } else if (moveType === MoveType.down) {
+        if (i > 0) {
+          this.componentsListDate.splice(i - 1, 0, ...this.componentsListDate.splice(i, 1))
+        }
+      } else if (moveType === MoveType.top) {
+        if (i + 1 < this.componentsListDate.length) {
+          this.componentsListDate.push(...this.componentsListDate.splice(i, 1))
+        }
+      } else if (moveType === MoveType.bottom) {
+        if (i > 0) {
+          this.componentsListDate.unshift(...this.componentsListDate.splice(i, 1))
+        }
+      }
     },
 
+    copyComponent(id: string) {
+      const component = this.getComponent(id)
+      const copyCom = _.clone(component)
+      if (component && copyCom) {
+        copyCom.id = generateId(component.name)
+        copyCom.alias += '_copy'
+        copyCom.attr.x += 30
+        copyCom.attr.y += 30
+
+        copyCom.hovered = false
+        copyCom.selected = false
+        copyCom.renameing = false
+
+        for (const key in copyCom.apiData) {
+          copyCom.apiData[key].id = nanoid()
+          copyCom.apiData[key].comId = copyCom.id
+        }
+
+        this.addComponent(copyCom)
+        this.selectComponentActive(copyCom.id)
+      }
+    },
+
+    deleteComponent(id: string, type: string) {
+      if (type === ComType.com) {
+        this.componentsListDate.splice(
+          this.componentsListDate.findIndex((com) => com.id === id),
+          1,
+        )
+      } else {
+        this.subComponents.splice(
+          this.subComponents.findIndex((com) => com.id === id),
+          1,
+        )
+      }
+    },
+
+    // canvas
     setCanvasScale(scale: number) {
       this.canvas.scale = scale === 0 ? this.minCanvasScale : scale
     },
@@ -118,6 +181,7 @@ export const useEditorComStore = defineStore('editor-com', {
       this.canvas.width = width
     },
 
+    // 对齐线
     calcAlignLine(component: any) {
       if (!this.alignLine.enable) {
         return

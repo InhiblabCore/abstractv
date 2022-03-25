@@ -25,6 +25,44 @@
           </n-icon>
         </div>
       </div>
+      <div class="layer-toolbar layer-toolbar-top">
+        <n-icon
+          title="上移一层"
+          class="toolbar-icon standard"
+          :class="enableBtnClass"
+          :style="enableBtnStyle"
+          @click="moveUp"
+        >
+          <IconMoveUp />
+        </n-icon>
+        <n-icon
+          title="下移一层"
+          class="toolbar-icon standard"
+          :class="enableBtnClass"
+          :style="enableBtnStyle"
+          @click="moveDown"
+        >
+          <IconMoveDown />
+        </n-icon>
+        <n-icon
+          title="置顶"
+          class="toolbar-icon standard"
+          :class="enableBtnClass"
+          :style="enableBtnStyle"
+          @click="moveTop"
+        >
+          <IconMoveTop />
+        </n-icon>
+        <n-icon
+          title="置底"
+          class="toolbar-icon standard"
+          :class="enableBtnClass"
+          :style="enableBtnStyle"
+          @click="moveBottom"
+        >
+          <IconMoveBottom />
+        </n-icon>
+      </div>
       <div class="layer-manager-wrap">
         <template v-for="com in components" :key="com.id">
           <div
@@ -42,6 +80,7 @@
             @mousedown="selectComponent(com.id)"
             @mouseenter="com.hovered = true"
             @mouseleave="com.hovered = false"
+            @contextmenu="showMenu"
           >
             <g-com-icon :icon="com.icon" />
             <input
@@ -77,6 +116,7 @@
             @mousedown="selectComponent(com.id)"
             @mouseenter="com.hovered = true"
             @mouseleave="com.hovered = false"
+            @contextmenu="showMenu"
           >
             <div
               class="layer-item-thumbail"
@@ -116,16 +156,46 @@
   import { useEditorComStore } from '@/store/modules/editorCom'
   import { useToolStore } from '@/store/modules/tool'
   import _ from 'lodash-es'
-  import { IconViewList, IconViewGrid, IconBack, IconLock, IconHide } from '@/icons'
+  import {
+    IconViewList,
+    IconViewGrid,
+    IconBack,
+    IconMoveUp,
+    IconMoveDown,
+    IconMoveTop,
+    IconMoveBottom,
+    IconLock,
+    IconHide,
+  } from '@/icons'
+  import { useContextMenu } from '@/hooks/useContextMenu'
+  import { MoveType } from '@/utils/enums'
 
   const toolStore = useToolStore()
   const editorComStore = useEditorComStore()
+  const { showMenu, selectedCom } = useContextMenu()
   const showText = ref(false)
 
   const components = computed(() => {
     return (_.clone(editorComStore.getComponentsListDate) as any[]).reverse()
   })
   const visiblePanel = computed(() => toolStore.getLayerShow)
+
+  const enableBtnClass = computed(() => !!selectedCom.value)
+  const enableBtnStyle = computed(() => {
+    return {
+      opacity: selectedCom.value ? 1 : 0.3,
+    }
+  })
+  const moveCom = (moveType: MoveType) => {
+    if (selectedCom.value) {
+      editorComStore.moveComponent({ id: selectedCom.value.id, moveType })
+    }
+  }
+
+  const moveUp = () => moveCom(MoveType.up)
+  const moveDown = () => moveCom(MoveType.down)
+  const moveTop = () => moveCom(MoveType.top)
+  const moveBottom = () => moveCom(MoveType.bottom)
 
   const changeVisible = () => {
     toolStore.layer.show = !visiblePanel.value

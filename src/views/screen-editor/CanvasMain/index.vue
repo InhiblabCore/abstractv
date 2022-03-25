@@ -13,7 +13,7 @@
         >
           <canvas-container
             v-for="component in componentsListDate"
-            :key="component.name"
+            :key="component.id"
             :component="component"
           >
             <component
@@ -56,11 +56,6 @@
       height: canvasHeight.value + 'px',
     } as CSSProperties
   })
-
-  watch(screenStyle, (c) => {
-    console.log(c)
-  })
-  //   console.log();
 
   // canvas等宽缩放
   const canvasStyle = computed(() => {
@@ -120,7 +115,7 @@
 
   // 点击背景取消选择组件，展示背景参数配置项
   const cancelSelectCom = () => {
-    editorComStore.cancelComponentSelect('page')
+    editorComStore.selectComponentActive('page')
   }
 </script>
 

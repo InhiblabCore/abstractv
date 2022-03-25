@@ -17,6 +17,7 @@
       <config-tool />
     </div>
   </div>
+  <context-menu />
   <!-- <editor-context-menu /> -->
 </template>
 
@@ -27,6 +28,7 @@
   import LayerArea from './LayerArea/index.vue'
   import FooterTool from './FooterTool/index.vue'
   import CanvasMain from './CanvasMain/index.vue'
+  import ContextMenu from './ContextMenu/index.vue'
 </script>
 
 <style scoped lang="scss">
