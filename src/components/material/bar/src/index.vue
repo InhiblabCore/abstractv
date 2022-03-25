@@ -1,25 +1,28 @@
 <template>
-  <div :style="wrapperStyle">
-    <div ref="container" style="width: 100%; height: 100%"></div>
+  <div class="datav-wrapper" :style="wrapperStyle">
+    <v-chart :option="option" autoresize />
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { useEcharts } from 'vue3-hooks-plus'
+  import VChart from 'vue-echarts'
+  import { BarChart } from 'echarts/charts'
+  import { GridComponent, TooltipComponent, LegendComponent } from 'echarts/components'
+  import { use } from 'echarts/core'
+  import { CanvasRenderer } from 'echarts/renderers'
 
-  //   const props = defineProps<{
-  //     com: any;
-  //   }>();
+  use([CanvasRenderer, BarChart, GridComponent, TooltipComponent, LegendComponent])
 
-  const { chart, container } = useEcharts()
+  const props = defineProps<{
+    component: any
+  }>()
 
-  //   const config = toRef(props.com, 'config');
-  //   const attr = toRef(props.com, 'attr');
+  const attr = toRef(props.component, 'attr')
 
   const wrapperStyle = computed(() => {
     return {
-      width: `400px`,
-      height: `300px`,
+      width: `${attr.value.w}px`,
+      height: `${attr.value.h}px`,
     }
   })
   const option: any = {
@@ -205,12 +208,4 @@
       },
     ],
   }
-
-  onMounted(() => {
-    if (chart.value) {
-      chart.value.setOption(option)
-    }
-  })
 </script>
-
-<style scoped lang="less"></style>

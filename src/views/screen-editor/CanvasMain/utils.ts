@@ -89,14 +89,18 @@ export const handleMove = ({
   mouseStartEvent,
   scale,
   grid,
+  calcAlignLine,
+  hideAlignLine,
 }: {
   component: any
   mouseStartEvent: MouseEvent
   scale: number
   grid: number
+  calcAlignLine: (component: any) => void
+  hideAlignLine: (component: any) => void
 }) => {
   const componentAttr = _.clone(component.attr)
-  const cloneComponentAttr: IPoint = { x: 0, y: 0 }
+  const cloneComponentAttr: IPoint = { x: componentAttr.x, y: componentAttr.y }
 
   const move = (listenMouseEvent: MouseEvent) => {
     cloneComponentAttr.x =
@@ -107,11 +111,14 @@ export const handleMove = ({
       componentAttr.y +
       Math.round((listenMouseEvent.clientY - mouseStartEvent.clientY) / scale / grid) * grid
     component.attr = { ...component.attr, x: cloneComponentAttr.x, y: cloneComponentAttr.y }
+
+    calcAlignLine?.(component)
   }
 
   const up = () => {
     document.removeEventListener('mousemove', move)
     document.removeEventListener('mouseup', up)
+    hideAlignLine?.(component)
   }
 
   document.addEventListener('mousemove', move)
@@ -141,4 +148,87 @@ export const handleRotate = (ev: MouseEvent, el: HTMLElement, com: any) => {
 
   document.addEventListener('mousemove', move)
   document.addEventListener('mouseup', up)
+}
+
+/**
+ * 计算缩放后位置大小 - 自然模式
+ * @param dir 拖拽方向
+ * @param attr 开始时的基本信息
+ * @param startPoint 拖拽起始点位置
+ * @param curPositon 当前拖拽位置
+ * @param scale 缩放比例
+ */
+function calcResizeForNormal(
+  dir: Direction,
+  attr: any,
+  startPoint: IPoint,
+  curPositon: IPoint,
+  scale: number,
+  pos: any,
+) {
+  if (dir === 't') {
+    pos.h = Math.round(attr.h + (startPoint.y - curPositon.y) / scale)
+    pos.y = Math.round(attr.y + (curPositon.y - startPoint.y) / scale)
+  } else if (dir === 'rt') {
+    pos.h = Math.round(attr.h + (startPoint.y - curPositon.y) / scale)
+    pos.w = Math.round(attr.w + (curPositon.x - startPoint.x) / scale)
+    pos.y = Math.round(attr.y + (curPositon.y - startPoint.y) / scale)
+  } else if (dir === 'r') {
+    pos.w = Math.round(attr.w + (curPositon.x - startPoint.x) / scale)
+  } else if (dir === 'rb') {
+    pos.h = Math.round(attr.h + (curPositon.y - startPoint.y) / scale)
+    pos.w = Math.round(attr.w + (curPositon.x - startPoint.x) / scale)
+  } else if (dir === 'b') {
+    pos.h = Math.round(attr.h + (curPositon.y - startPoint.y) / scale)
+  } else if (dir === 'lb') {
+    pos.h = Math.round(attr.h + (curPositon.y - startPoint.y) / scale)
+    pos.w = Math.round(attr.w + (startPoint.x - curPositon.x) / scale)
+    pos.x = Math.round(attr.x + (curPositon.x - startPoint.x) / scale)
+  } else if (dir === 'l') {
+    pos.w = Math.round(attr.w + (startPoint.x - curPositon.x) / scale)
+    pos.x = Math.round(attr.x + (curPositon.x - startPoint.x) / scale)
+  } else if (dir === 'lt') {
+    pos.h = Math.round(attr.h + (startPoint.y - curPositon.y) / scale)
+    pos.w = Math.round(attr.w + (startPoint.x - curPositon.x) / scale)
+    pos.x = Math.round(attr.x + (curPositon.x - startPoint.x) / scale)
+    pos.y = Math.round(attr.y + (curPositon.y - startPoint.y) / scale)
+  }
+}
+
+export const handleZoom = (ev: MouseEvent, dir: Direction, component: any, scale: number) => {
+  const componentAttr = _.clone(component.attr)
+  const cloneComponentAttr: IPoint & { h: number; w: number } = {
+    x: componentAttr.x,
+    y: componentAttr.y,
+    h: componentAttr.h,
+    w: componentAttr.w,
+  }
+  const move = (listenMouseEvent: MouseEvent) => {
+    calcResizeForNormal(
+      dir,
+      componentAttr,
+      { x: ev.clientX, y: ev.clientY },
+      { x: listenMouseEvent.clientX, y: listenMouseEvent.clientY },
+      scale,
+      cloneComponentAttr,
+    )
+
+    component.attr = {
+      ...component.attr,
+      x: cloneComponentAttr.x,
+      y: cloneComponentAttr.y,
+      h: cloneComponentAttr.h,
+      w: cloneComponentAttr.w,
+    }
+  }
+
+  const up = () => {
+    document.removeEventListener('mousemove', move)
+    document.removeEventListener('mouseup', up)
+  }
+
+  document.addEventListener('mousemove', move)
+  document.addEventListener('mouseup', up)
+
+  //   setAttr(ev, dir, com, scale, 0, mode)
 }

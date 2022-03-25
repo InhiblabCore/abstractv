@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent } from 'vue';
+  import { defineComponent } from 'vue'
   import {
     IconHelp,
     IconViewGrid,
@@ -38,7 +38,7 @@
     IconComInfo,
     IconTable,
     IconMedia,
-  } from '@/icons';
+  } from '@/icons'
 
   export default defineComponent({
     name: 'GComIcon',
@@ -66,5 +66,5 @@
         required: true,
       },
     },
-  });
+  })
 </script>

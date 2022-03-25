@@ -139,7 +139,7 @@
       }
 
       .project-ungrouped {
-        color: var(--datav-font-color);
+        color: var(--abstractv-font-color);
       }
 
       .project-all {
@@ -167,7 +167,7 @@
 
       .project-num {
         user-select: none;
-        color: var(--datav-font-color);
+        color: var(--abstractv-font-color);
       }
 
       .group-btns {

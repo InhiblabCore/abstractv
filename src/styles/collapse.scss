@@ -61,7 +61,7 @@
 .g-field-collapse-panel {
   > .n-collapse-item__header {
     .g-field-collapse-panel-toolbox {
-      color: var(--datav-font-color);
+      color: var(--abstractv-font-color);
       margin-left: auto;
       margin-right: 32px;
 
@@ -83,7 +83,7 @@
         }
 
         &.--disabled {
-          color: var(--datav-font-color-disabled);
+          color: var(--abstractv-font-color-disabled);
           cursor: not-allowed;
         }
       }

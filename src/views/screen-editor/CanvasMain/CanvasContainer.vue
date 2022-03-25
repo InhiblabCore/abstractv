@@ -1,5 +1,6 @@
 <template>
   <div class="canvas-container" :style="CanvasContainerStyle" :class="canvasContainerClass">
+    <refer-line v-if="component.selected" :attr="component.attr" :scale="scale" />
     <div
       :class="['datav-scale', { hovered: isHover }]"
       :style="hideStyle"
@@ -9,7 +10,11 @@
       <div class="transform-handler" :class="handlerClass" :style="handlerStyle">
         <div class="datav-com">
           <slot></slot>
-          <div class="datav-wrapper-event-disable" :style="wrapperStyle"></div>
+          <div
+            class="datav-wrapper-event-disable"
+            :style="wrapperStyle"
+            @contextmenu="showMenu"
+          ></div>
         </div>
         <ControlPoint
           :component="component"
@@ -24,13 +29,15 @@
 </template>
 
 <script lang="ts" setup>
-  import useCanvasScale from '@/hooks/useCanvasScale'
   import { useEditorComStore } from '@/store/modules/editorCom'
-  import { useEventEmitter, useHover } from 'vue3-hooks-plus'
+  import { useHover } from 'vue3-hooks-plus'
   import { handleMove } from './utils'
   import ControlPoint from './ControlPoint.vue'
+  import ReferLine from './refer-line.vue'
+  import { useContextMenu } from '@/hooks/useContextMenu'
+
   const editorComStore = useEditorComStore()
-  const event = useEventEmitter({ global: true })
+  const { showMenu } = useContextMenu()
   const instance = getCurrentInstance()
   const props = defineProps<{
     component: {
@@ -45,20 +52,20 @@
       locked: boolean
       hided: boolean
       hovered: boolean
-      componentId: string
+      id: string
     }
   }>()
 
-  event.useSubscription('select', (data: any) => {
-    const id = data?.params?.[0]?.componentId
-    if (id === props.component.componentId) editorComStore.setComponentSelect(props.component)
-    else editorComStore.cancelComponentSelect(props.component)
+  const containScaleRef = ref()
+  const mouseIsHover = useHover(containScaleRef)
+
+  watch(mouseIsHover, (b) => {
+    editorComStore.setComponentHover(b, props.component.id)
   })
 
-  const { canvasScale: scale } = useCanvasScale()
+  const isHover = computed(() => props.component.hovered)
 
-  const containScaleRef = ref()
-  const isHover = useHover(containScaleRef)
+  const scale = computed(() => editorComStore.getCanvasScale)
 
   const CanvasContainerStyle = computed(() => ({
     top: 0,
@@ -79,7 +86,6 @@
   const handlerClass = computed(() => ({
     hided: !props.component.selected || props.component.locked,
   }))
-
   const handlerStyle = computed(() => ({
     cursor: 'move',
     transform: `rotate(${props.component.attr.deg}deg)`,
@@ -93,7 +99,7 @@
     if (props.component.selected) {
       return
     }
-    event.emit('select', { componentId: props.component.componentId })
+    editorComStore.selectComponentActive(props.component.id)
   }
 
   const onMove = (e: MouseEvent) => {
@@ -102,6 +108,8 @@
       mouseStartEvent: e,
       grid: 8,
       scale: scale.value,
+      calcAlignLine: editorComStore.calcAlignLine,
+      hideAlignLine: editorComStore.hideAlignLine,
     })
     selectCom()
   }

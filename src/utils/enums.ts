@@ -68,4 +68,4 @@ export const AnimationEasing = {
   bounceIn: 'bounceIn',
   bounceOut: 'bounceOut',
   bounceInOut: 'bounceInOut',
-};
+}

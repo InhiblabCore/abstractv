@@ -1,18 +1,19 @@
-@import "mixins/util";
+@import 'mixins/util';
 
 .g-input {
   width: 100%;
 }
 
 .g-input__caption {
+
+  @include utils-ellipsis();
+
   display: block;
   width: 100%;
   font-size: 12px;
   height: 16px;
   line-height: 16px;
   color: var(--datav-gui-font-color-description);
-
-  @include utils-ellipsis();
 }
 
 .new-input {
@@ -22,7 +23,7 @@
   background: var(--datav-gui-component-bgcolor);
   vertical-align: middle;
   padding: 0 8px;
-  color: var(--datav-font-color);
+  color: var(--abstractv-font-color);
   width: 100%;
   caret-color: var(--datav-main-color);
   box-sizing: border-box;
@@ -36,7 +37,7 @@
 
   &.is-disabled {
     cursor: not-allowed;
-    color: var(--datav-font-color-disabled);
+    color: var(--abstractv-font-color-disabled);
     border: var(--datav-border-disabled);
   }
 
