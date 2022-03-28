@@ -220,7 +220,6 @@ export const handleZoom = (ev: MouseEvent, dir: Direction, component: any, scale
       h: cloneComponentAttr.h,
       w: cloneComponentAttr.w,
     }
-    console.log(component)
   }
 
   const up = () => {

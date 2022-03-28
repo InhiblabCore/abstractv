@@ -8,7 +8,7 @@
   import VChart from 'vue-echarts'
   import { BarChart } from 'echarts/charts'
   import { GridComponent, TooltipComponent, LegendComponent } from 'echarts/components'
-  import { use } from 'echarts/core'
+  import { use, graphic } from 'echarts/core'
   import { CanvasRenderer } from 'echarts/renderers'
 
   use([CanvasRenderer, BarChart, GridComponent, TooltipComponent, LegendComponent])
@@ -17,6 +17,7 @@
     component: any
   }>()
 
+  const config = toRef(props.component, 'config')
   const attr = toRef(props.component, 'attr')
 
   const wrapperStyle = computed(() => {
@@ -25,189 +26,255 @@
       height: `${attr.value.h}px`,
     }
   })
-  const option: any = {
-    backgroundColor: 'transparent',
-    color: '#384757',
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'cross',
-        crossStyle: {
-          color: '#384757',
-        },
-      },
-    },
-    legend: {
-      data: [
-        {
-          name: '待处理',
-          icon: 'circle',
-          textStyle: {
-            color: '#7d838b',
-          },
-        },
-        {
-          name: '已处理',
-          icon: 'circle',
-          textStyle: {
-            color: '#7d838b',
-          },
-        },
-        {
-          name: '完成率',
-          icon: 'circle',
-          textStyle: {
-            color: '#7d838b',
-          },
-        },
-      ],
-      top: '0%',
-      textStyle: {
-        color: '#fff',
-      },
-    },
-    xAxis: [
-      {
-        type: 'category',
-        data: ['1', '2', '3', '4', '5', '6'],
-        axisPointer: {
-          type: 'shadow',
-        },
-        axisLabel: {
-          show: true,
-          textStyle: {
-            color: '#7d838b',
-          },
-        },
-      },
-    ],
-    yAxis: [
-      {
-        type: 'value',
-        name: '数值1',
-        nameTextStyle: {
-          color: '#7d838b',
-        },
-        min: 0,
-        max: 50,
-        interval: 10,
-        axisLabel: {
-          show: true,
-          textStyle: {
-            color: '#7d838b',
-          },
-        },
-        axisTick: {
-          show: false,
-        },
-        axisLine: {
-          show: false,
-        },
-        offset: 10,
-        splitLine: {
-          show: false,
-        },
-      },
-      {
-        type: 'value',
-        name: '数值2',
-        show: true,
-        axisTick: {
-          show: false,
-        },
-        axisLine: {
-          show: false,
-        },
-        // offset: 10,
-        splitLine: {
-          show: false,
-        },
-      },
-    ],
-    grid: {
-      top: '15%',
-      bottom: 32,
-      left: '15%',
-      right: '5%',
-    },
-    series: [
-      {
-        name: '待处理',
-        type: 'bar',
-        data: [4, 6, 36, 6, 8, 6],
-        barWidth: 'auto',
-        itemStyle: {
-          normal: {
-            color: {
-              type: 'linear',
-              x: 0,
-              y: 0,
-              x2: 0,
-              y2: 1,
-              colorStops: [
-                {
-                  offset: 0,
-                  color: 'rgba(255,37,117,0.7)',
-                },
-                {
-                  offset: 0.5,
-                  color: 'rgba(0,133,245,0.7)',
-                },
-                {
-                  offset: 1,
-                  color: 'rgba(0,133,245,0.3)',
-                },
-              ],
-              globalCoord: false,
-            },
-          },
-        },
-      },
-      {
-        name: '已处理',
-        type: 'bar',
-        data: [4, 2, 36, 6, 8, 6],
-        barWidth: 'auto',
-        itemStyle: {
-          color: {
-            type: 'linear',
-            x: 0,
-            y: 0,
-            x2: 0,
-            y2: 1,
-            colorStops: [
-              {
-                offset: 0,
-                color: 'rgba(255,37,117,0.7)',
-              },
-              {
-                offset: 0.5,
-                color: 'rgba(0,255,252,0.7)',
-              },
-              {
-                offset: 1,
-                color: 'rgba(0,255,252,0.3)',
-              },
-            ],
-            globalCoord: false,
-          },
-        },
-        barGap: '0',
-      },
-      {
-        name: '完成率',
-        type: 'line',
-        yAxisIndex: 1,
-        data: [100, 33, 100, 100, 100, 100],
-        itemStyle: {
-          normal: {
-            color: '#ffaa00',
-          },
-        },
-        smooth: true,
-      },
-    ],
-  }
-</script>
 
-<style scoped lang="less"></style>
+  const getSeries = () => {
+    const { global, label, series } = config.value
+    console.log(config.value)
+
+    // const { values } = chartData.value
+    return series.map((item: any) => {
+      return {
+        type: item.type,
+        name: item.name,
+        label: {
+          show: label.show,
+          position: label.position,
+          ...label.textStyle,
+          offset: [label.offsetX, label.offsetY],
+        },
+        itemStyle: {
+          color:
+            item.color.type === 'gradient'
+              ? new graphic.LinearGradient(0, 0, 0, 1, [
+                  {
+                    offset: 0,
+                    color: item.color.from,
+                  },
+                  {
+                    offset: 1,
+                    color: item.color.to,
+                  },
+                ])
+              : item.color.value,
+        },
+        barGap: `${global.innerPadding}%`,
+        barCategoryGap: `${global.outerPadding}%`,
+        showBackground: global.background.show,
+        backgroundStyle: {
+          color: global.background.color,
+        },
+        data: [
+          {
+            x: '1',
+            y: 100,
+            value: 100,
+          },
+          {
+            x: '2',
+            y: 300,
+            value: 80,
+          },
+          {
+            x: '3',
+            y: 300,
+            value: 40,
+          },
+          {
+            x: '4',
+            y: 300,
+            value: 80,
+          },
+          {
+            x: '5',
+            y: 300,
+            value: 80,
+          },
+        ],
+      }
+    })
+  }
+  const option = computed(() => {
+    const { global, xAxis, yAxis, tooltip, legend, animation } = config.value
+    const [legendTop, legendLeft] = legend.position.split('-')
+    const pointerLineStyle = {
+      type:
+        tooltip.pointer.line.type === 'dashed'
+          ? [tooltip.pointer.line.dashedLength, tooltip.pointer.line.dashedSpace]
+          : tooltip.pointer.line.type,
+      width: tooltip.pointer.line.width,
+      color: tooltip.pointer.line.color,
+    }
+
+    const opts = {
+      textStyle: {
+        fontFamily: global.fontFamily,
+      },
+      grid: {
+        ...global.margin,
+      },
+      tooltip: {
+        show: tooltip.show,
+        textStyle: {
+          ...tooltip.textStyle,
+        },
+        padding: [tooltip.background.padding.v, tooltip.background.padding.h],
+        backgroundColor: tooltip.background.color,
+        trigger: tooltip.pointer.show ? 'axis' : 'item',
+        axisPointer: {
+          type: tooltip.pointer.show ? 'cross' : 'none',
+          label: {
+            show: false,
+          },
+          lineStyle: pointerLineStyle,
+          crossStyle: pointerLineStyle,
+        },
+        borderWidth: 0,
+      },
+      legend: {
+        show: legend.show,
+        top: legendTop,
+        left: legendLeft,
+        orient: legend.orient,
+        textStyle: {
+          ...legend.textStyle,
+        },
+        icon: legend.symbol.show
+          ? legend.symbol.icon === 'auto'
+            ? null
+            : legend.symbol.icon
+          : 'none',
+        itemWidth: legend.symbol.width,
+        itemHeight: legend.symbol.height,
+        itemGap: legend.symbol.gap,
+        type: legend.page.enabled ? 'scroll' : 'plain',
+        width: legend.page.enabled ? legend.page.size.width : 'auto',
+        height: legend.page.enabled ? legend.page.size.height : 'auto',
+        pageIconSize: legend.page.button.size,
+        pageIconColor: legend.page.button.color,
+        pageIconInactiveColor: legend.page.button.inactiveColor,
+        pageTextStyle: {
+          color: legend.page.pageNumColor,
+        },
+      },
+      xAxis: {
+        show: xAxis.show,
+        type: xAxis.type,
+        boundaryGap: xAxis.boundaryGap,
+        name: xAxis.title.show ? xAxis.title.name : '',
+        nameLocation: xAxis.title.location,
+        nameRotate: xAxis.title.display.rotate,
+        nameGap: xAxis.title.display.offset,
+        nameTextStyle: {
+          ...xAxis.title.textStyle,
+        },
+        axisLine: {
+          show: xAxis.axisLine.show,
+          lineStyle: {
+            type: xAxis.axisLine.type,
+            width: xAxis.axisLine.width,
+            color: xAxis.axisLine.color,
+          },
+        },
+        axisTick: {
+          show: xAxis.axisTick.show,
+          lineStyle: {
+            type: xAxis.axisTick.type,
+            width: xAxis.axisTick.width,
+            color: xAxis.axisTick.color,
+          },
+          alignWithLabel: true,
+        },
+        axisLabel: {
+          show: xAxis.axisLabel.show,
+          //   interval: getAutoValue(xAxis.axisLabel.interval),
+          rotate: xAxis.axisLabel.display.rotate,
+          margin: xAxis.axisLabel.display.margin,
+          align: xAxis.axisLabel.align,
+          ...xAxis.axisLabel.textStyle,
+          timeFormat: xAxis.axisLabel.timeFormat,
+          valueFormat: xAxis.axisLabel.valueFormat,
+          //   formatter: (val: string) => {
+          //     if (xAxis.type === 'time') {
+          //       return dayjs(val).format(xAxis.axisLabel.timeFormat)
+          //     } else if (xAxis.type === 'value') {
+          //       return valueFormater(val, xAxis.axisLabel.valueFormat)
+          //     }
+          //     return val
+          //   },
+        },
+        splitLine: {
+          show: xAxis.grid.show,
+          lineStyle: {
+            type:
+              xAxis.grid.line.type === 'dashed'
+                ? [xAxis.grid.line.dashedLength, xAxis.grid.line.dashedSpace]
+                : xAxis.grid.line.type,
+            width: xAxis.grid.line.width,
+            color: xAxis.grid.line.color,
+          },
+        },
+        // data: chartData.value.keys,
+      },
+      yAxis: {
+        show: yAxis.show,
+        type: 'value',
+        name: yAxis.title.show ? yAxis.title.name : '',
+        nameLocation: yAxis.title.location,
+        nameRotate: yAxis.title.display.rotate,
+        nameGap: yAxis.title.display.offset,
+        nameTextStyle: {
+          ...yAxis.title.textStyle,
+        },
+        axisLine: {
+          show: yAxis.axisLine.show,
+          lineStyle: {
+            type: yAxis.axisLine.type,
+            width: yAxis.axisLine.width,
+            color: yAxis.axisLine.color,
+          },
+        },
+        axisTick: {
+          show: yAxis.axisTick.show,
+          lineStyle: {
+            type: yAxis.axisTick.type,
+            width: yAxis.axisTick.width,
+            color: yAxis.axisTick.color,
+          },
+          alignWithLabel: true,
+        },
+        boundaryGap: [`${yAxis.axisLabel.boundaryGap}%`, `${yAxis.axisLabel.boundaryGap}%`],
+        axisLabel: {
+          show: yAxis.axisLabel.show,
+          rotate: yAxis.axisLabel.display.rotate,
+          margin: yAxis.axisLabel.display.margin,
+          align: yAxis.axisLabel.align,
+          ...yAxis.axisLabel.textStyle,
+          valueFormat: yAxis.axisLabel.valueFormat,
+          //   formatter: (val: string) => {
+          //     return valueFormater(val, yAxis.axisLabel.valueFormat)
+          //   },
+        },
+        splitLine: {
+          show: yAxis.grid.show,
+          lineStyle: {
+            type:
+              yAxis.grid.line.type === 'dashed'
+                ? [yAxis.grid.line.dashedLength, yAxis.grid.line.dashedSpace]
+                : yAxis.grid.line.type,
+            width: yAxis.grid.line.width,
+            color: yAxis.grid.line.color,
+          },
+        },
+        // min: getLimitValue(yAxis.extent.min),
+        // max: getLimitValue(yAxis.extent.max),
+        splitNumber: yAxis.splitNumber > 0 ? yAxis.splitNumber : null,
+      },
+      animation: animation.enabled,
+      animationDuration: animation.duration,
+      animationEasing: animation.easing as any,
+      animationDelay: animation.delay,
+      series: getSeries(),
+    }
+    return opts
+  })
+</script>

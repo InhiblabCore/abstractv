@@ -1,7 +1,7 @@
 <template>
   <div class="canvas-main">
     <div id="canvas-wp" class="canvas-panel-wrap" @mousedown.stop="cancelSelectCom">
-      <div id="canvas-wp" class="canvas-panel-wrap" :style="screenStyle">
+      <div class="screen-shot" :style="screenStyle">
         <align-line />
         <ruler-tool />
         <div
@@ -13,7 +13,7 @@
         >
           <canvas-container
             v-for="component in componentsListDate"
-            :key="component.name"
+            :key="component.id"
             :component="component"
           >
             <component
@@ -37,14 +37,13 @@
   import { CSSProperties } from 'vue'
   import backgroundImage from '@/assets/background.png'
   import CanvasContainer from './CanvasContainer.vue'
-  import { useEventEmitter } from 'vue3-hooks-plus'
   import RulerTool from './RulerTool/index.vue'
   import AlignLine from './RulerTool/align-line.vue'
+  import { AbstractvComponent } from '@/components/componentFactory'
 
   useCanvasScale()
   const editorComStore = useEditorComStore()
   const componentsListDate = computed(() => editorComStore.getComponentsListDate)
-  const eventBus = useEventEmitter({ global: true })
 
   const canvasScale = computed(() => editorComStore.getCanvasScale)
   const canvasHeight = computed(() => editorComStore.getCanvasHeight)
@@ -53,19 +52,19 @@
   // 固定外部宽高
   const screenStyle = computed(() => {
     return {
-      width: editorComStore.page.width,
-      height: editorComStore.page.height,
+      width: canvasWidth.value + 'px',
+      height: canvasHeight.value + 'px',
     } as CSSProperties
   })
 
   // canvas等宽缩放
   const canvasStyle = computed(() => {
     return {
-      backgroundColor: 'rgba(13,42,67,0)',
+      backgroundColor: editorComStore.page.bgcolor,
       backgroundImage: `url(${backgroundImage})`,
-      height: `${canvasHeight.value}px`,
+      height: `${editorComStore.page.height}px`,
       position: 'absolute',
-      width: `${canvasWidth.value}px`,
+      width: `${editorComStore.page.width}px`,
       transform: `scale(${editorComStore.getCanvasScale}) translate(0px, 0px)`,
     } as CSSProperties
   })
@@ -74,11 +73,11 @@
     event.preventDefault()
 
     try {
-      const name = event.dataTransfer.getData('text')
+      const name = (event.dataTransfer.getData('text') as string).replace('V', '')
       if (name) {
         // ToolbarModule.addLoading();
         // 创建一个组件
-        let component: any = await createComponent(name)
+        let component: AbstractvComponent = await createComponent(name)!
 
         // 获取缩放
         const scale = canvasScale.value
@@ -98,8 +97,8 @@
         component.attr.zIndex = editorComStore.getComponentZindex
 
         // 每次新增组件的时候选中该组件
-        eventBus.emit('select', { componentId: component.componentId })
         editorComStore.addComponent(component)
+        editorComStore.selectComponentActive(component.id)
       }
     } catch {
       // TODO
@@ -116,7 +115,7 @@
 
   // 点击背景取消选择组件，展示背景参数配置项
   const cancelSelectCom = () => {
-    eventBus.emit('select', { componentId: 'page' })
+    editorComStore.selectComponentActive('page')
   }
 </script>
 

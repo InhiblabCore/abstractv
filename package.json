@@ -34,6 +34,7 @@
     "lodash-es": "^4.17.21",
     "monaco-editor": "^0.33.0",
     "naive-ui": "^2.23.2",
+    "nanoid": "^3.3.1",
     "pinia": "^2.0.9",
     "shortid": "^2.2.16",
     "unplugin-auto-import": "^0.5.3",

@@ -54,10 +54,7 @@
             <IconLayoutColumn />
           </n-icon>
 
-          <span
-            v-if="showToolboxSplit"
-            class="g-field-collapse-panel-toolbox-split"
-          ></span>
+          <span v-if="showToolboxSplit" class="g-field-collapse-panel-toolbox-split"></span>
 
           <template v-if="showToolboxCopy">
             <n-tooltip placement="top" :disabled="!copyState.disabled">
@@ -115,21 +112,12 @@
               '--datav-gui-tabs-card-num': max,
             }"
           >
-            <n-tab-pane
-              v-for="(item, idx) in list"
-              :key="idx"
-              :name="idx"
-              :tab="getTabLabel(idx)"
-            >
+            <n-tab-pane v-for="(item, idx) in list" :key="idx" :name="idx" :tab="getTabLabel(idx)">
               <slot :item="item"></slot>
             </n-tab-pane>
           </n-tabs>
           <div v-else class="g-field-tabs --column">
-            <div
-              v-for="(item, idx) in list"
-              :key="idx"
-              class="g-field-tabs-column-item"
-            >
+            <div v-for="(item, idx) in list" :key="idx" class="g-field-tabs-column-item">
               <span
                 class="g-field-tabs-column-item-head"
                 :class="{ '--selected': idx === activeTab }"
@@ -141,205 +129,216 @@
             </div>
           </div>
         </template>
-        <span v-else class="g-field-collapse-panel-empty">
-          列表为空
-        </span>
+        <span v-else class="g-field-collapse-panel-empty"> 列表为空 </span>
       </template>
       <slot v-else></slot>
     </n-collapse-item>
   </n-collapse>
 </template>
 
-<script lang='ts'>
-import { defineComponent, ref, watch, PropType, computed } from 'vue'
-import { cloneDeep } from 'lodash-es'
-import { UPDATE_MODEL_EVENT } from '@/utils/constants'
-import { ToolboxType } from '@/utils/enums'
-import { IconArrowRight, IconPlus, IconDelete, IconCopy, IconLayoutRow, IconLayoutColumn } from '@/icons'
-
-export default defineComponent({
-  name: 'GFieldCollapse',
-  components: {
+<script lang="ts">
+  import { defineComponent, ref, watch, PropType, computed } from 'vue'
+  import { cloneDeep } from 'lodash-es'
+  import { UPDATE_MODEL_EVENT } from '@/utils/constants'
+  import { ToolboxType } from '@/utils/enums'
+  import {
     IconArrowRight,
     IconPlus,
     IconDelete,
     IconCopy,
     IconLayoutRow,
     IconLayoutColumn,
-  },
-  props: {
-    mode: {
-      type: String as PropType<'' | 'layout'>,
-      default: '',
-    },
-    label: {
-      type: String,
-      required: true,
-    },
-    tooltip: {
-      type: String,
-    },
-    toggle: {
-      type: Boolean,
-      default: false,
-    },
-    modelValue: {
-      type: Boolean,
-      default: true,
-    },
-    defaultLayout: {
-      type: String as PropType<ToolboxType.horizontal | ToolboxType.vertical>,
-      default: ToolboxType.horizontal,
-    },
-    features: {
-      type: Array as PropType<ToolboxType[]>,
-      default: () => [],
-    },
-    list: Array,
-    min: {
-      type: Number,
-      default: 0,
-    },
-    max: {
-      type: Number,
-      default: 1000,
-    },
-    tab: String,
-    addItem: {
-      type: Function,
-      default: () => {},
-    },
-  },
-  emits: [UPDATE_MODEL_EVENT],
-  setup(props, ctx) {
-    const activeNames = ref<string[]>([])
-    const activeTab = ref(0)
-    const isLayoutRow = ref(props.defaultLayout === ToolboxType.horizontal)
+  } from '@/icons'
 
-    const visibleToolbox = computed(() => {
-      return activeNames.value.length > 0 && props.features.length > 0
-    })
+  export default defineComponent({
+    name: 'GFieldCollapse',
+    components: {
+      IconArrowRight,
+      IconPlus,
+      IconDelete,
+      IconCopy,
+      IconLayoutRow,
+      IconLayoutColumn,
+    },
+    props: {
+      mode: {
+        type: String as PropType<'' | 'layout'>,
+        default: '',
+      },
+      label: {
+        type: String,
+        required: true,
+      },
+      tooltip: {
+        type: String,
+      },
+      toggle: {
+        type: Boolean,
+        default: false,
+      },
+      modelValue: {
+        type: Boolean,
+        default: true,
+      },
+      defaultLayout: {
+        type: String as PropType<ToolboxType.horizontal | ToolboxType.vertical>,
+        default: ToolboxType.horizontal,
+      },
+      features: {
+        type: Array as PropType<ToolboxType[]>,
+        default: () => [],
+      },
+      list: Array,
+      min: {
+        type: Number,
+        default: 0,
+      },
+      max: {
+        type: Number,
+        default: 1000,
+      },
+      tab: String,
+      addItem: {
+        type: Function,
+        default: () => {},
+      },
+    },
+    emits: [UPDATE_MODEL_EVENT],
+    setup(props, ctx) {
+      const activeNames = ref<string[]>([])
+      const activeTab = ref(0)
+      const isLayoutRow = ref(props.defaultLayout === ToolboxType.horizontal)
 
-    const showToolboxRow = computed(() => {
-      return props.features.includes(ToolboxType.horizontal)
-    })
+      const visibleToolbox = computed(() => {
+        return activeNames.value.length > 0 && props.features.length > 0
+      })
 
-    const showToolboxCol = computed(() => {
-      return props.features.includes(ToolboxType.vertical)
-    })
+      const showToolboxRow = computed(() => {
+        return props.features.includes(ToolboxType.horizontal)
+      })
 
-    const showToolboxCopy = computed(() => {
-      return props.features.includes(ToolboxType.copy)
-    })
+      const showToolboxCol = computed(() => {
+        return props.features.includes(ToolboxType.vertical)
+      })
 
-    const showToolboxAdd = computed(() => {
-      return props.features.includes(ToolboxType.add)
-    })
+      const showToolboxCopy = computed(() => {
+        return props.features.includes(ToolboxType.copy)
+      })
 
-    const showToolboxDel = computed(() => {
-      return props.features.includes(ToolboxType.remove)
-    })
+      const showToolboxAdd = computed(() => {
+        return props.features.includes(ToolboxType.add)
+      })
 
-    const showToolboxSplit = computed(() => {
-      return (showToolboxRow.value || showToolboxCol.value)
-        && (showToolboxCopy.value || showToolboxAdd.value || showToolboxDel.value)
-    })
+      const showToolboxDel = computed(() => {
+        return props.features.includes(ToolboxType.remove)
+      })
 
-    const copyState = computed(() => {
-      const disabled = !props.list || props.list.length < props.min || props.list.length >= props.max
-      const msg = disabled ? '不可复制' : ''
+      const showToolboxSplit = computed(() => {
+        return (
+          (showToolboxRow.value || showToolboxCol.value) &&
+          (showToolboxCopy.value || showToolboxAdd.value || showToolboxDel.value)
+        )
+      })
+
+      const copyState = computed(() => {
+        const disabled =
+          !props.list || props.list.length < props.min || props.list.length >= props.max
+        const msg = disabled ? '不可复制' : ''
+        return {
+          disabled,
+          msg,
+        }
+      })
+
+      const addState = computed(() => {
+        const disabled = !props.list || props.list.length >= props.max
+        const msg = disabled ? '已至最大项数' : ''
+        return {
+          disabled,
+          msg,
+        }
+      })
+
+      const deleteState = computed(() => {
+        const disabled = !props.list || props.list.length <= props.min
+        const msg = disabled ? '已至最小项数' : ''
+        return {
+          disabled,
+          msg,
+        }
+      })
+
+      const handleExpand = (keys: string[]) => {
+        if (!(props.toggle && !props.modelValue)) {
+          activeNames.value = keys
+        }
+      }
+
+      const toggleVisible = (nv: boolean) => {
+        ctx.emit(UPDATE_MODEL_EVENT, nv)
+      }
+
+      const copyData = () => {
+        if (!copyState.value.disabled) {
+          const idx = Math.min(activeTab.value, props.list!.length - 1)
+          props.list!.push(cloneDeep(props.list![idx]))
+        }
+      }
+
+      const deleteData = () => {
+        if (!deleteState.value.disabled) {
+          const idx = Math.min(activeTab.value, props?.list!.length - 1)
+          props?.list!.splice(idx, 1)
+          activeTab.value = 0
+        }
+      }
+
+      const addData = () => {
+        if (!addState.value.disabled && typeof props.addItem === 'function') {
+          const item = props.addItem() || {}
+          props.list!.push(item)
+        }
+      }
+
+      const getTabLabel = (idx: number) => {
+        return (props.tab || props.label) + (idx + 1)
+      }
+
+      const changeTab = (idx: number) => {
+        activeTab.value = idx
+      }
+
+      watch(
+        () => props.modelValue,
+        (nv: boolean) => {
+          if (!nv) {
+            activeNames.value = []
+          }
+        },
+      )
+
       return {
-        disabled,
-        msg,
+        activeNames,
+        activeTab,
+        isLayoutRow,
+        visibleToolbox,
+        showToolboxRow,
+        showToolboxCol,
+        showToolboxCopy,
+        showToolboxAdd,
+        showToolboxDel,
+        showToolboxSplit,
+        copyState,
+        addState,
+        deleteState,
+        handleExpand,
+        toggleVisible,
+        copyData,
+        addData,
+        deleteData,
+        getTabLabel,
+        changeTab,
       }
-    })
-
-    const addState = computed(() => {
-      const disabled = !props.list || props.list.length >= props.max
-      const msg = disabled ? '已至最大项数' : ''
-      return {
-        disabled,
-        msg,
-      }
-    })
-
-    const deleteState = computed(() => {
-      const disabled = !props.list || props.list.length <= props.min
-      const msg = disabled ? '已至最小项数' : ''
-      return {
-        disabled,
-        msg,
-      }
-    })
-
-    const handleExpand = (keys: string[]) => {
-      if (!(props.toggle && !props.modelValue)) {
-        activeNames.value = keys
-      }
-    }
-
-    const toggleVisible = (nv: boolean) => {
-      ctx.emit(UPDATE_MODEL_EVENT, nv)
-    }
-
-    const copyData = () => {
-      if (!copyState.value.disabled) {
-        const idx = Math.min(activeTab.value, props.list.length - 1)
-        props.list.push(cloneDeep(props.list[idx]))
-      }
-    }
-
-    const deleteData = () => {
-      if (!deleteState.value.disabled) {
-        const idx = Math.min(activeTab.value, props.list.length - 1)
-        props.list.splice(idx, 1)
-        activeTab.value = 0
-      }
-    }
-
-    const addData = () => {
-      if (!addState.value.disabled && typeof props.addItem === 'function') {
-        const item = props.addItem() || {}
-        props.list.push(item)
-      }
-    }
-
-    const getTabLabel = (idx: number) => {
-      return (props.tab || props.label) + (idx + 1)
-    }
-
-    const changeTab = (idx: number) => {
-      activeTab.value = idx
-    }
-
-    watch(() => props.modelValue, (nv: boolean) => {
-      if (!nv) {
-        activeNames.value = []
-      }
-    })
-
-    return {
-      activeNames,
-      activeTab,
-      isLayoutRow,
-      visibleToolbox,
-      showToolboxRow,
-      showToolboxCol,
-      showToolboxCopy,
-      showToolboxAdd,
-      showToolboxDel,
-      showToolboxSplit,
-      copyState,
-      addState,
-      deleteState,
-      handleExpand,
-      toggleVisible,
-      copyData,
-      addData,
-      deleteData,
-      getTabLabel,
-      changeTab,
-    }
-  },
-})
+    },
+  })
 </script>

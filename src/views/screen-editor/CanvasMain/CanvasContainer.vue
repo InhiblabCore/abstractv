@@ -10,7 +10,11 @@
       <div class="transform-handler" :class="handlerClass" :style="handlerStyle">
         <div class="datav-com">
           <slot></slot>
-          <div class="datav-wrapper-event-disable" :style="wrapperStyle"></div>
+          <div
+            class="datav-wrapper-event-disable"
+            :style="wrapperStyle"
+            @contextmenu="showMenu"
+          ></div>
         </div>
         <ControlPoint
           :component="component"
@@ -26,13 +30,14 @@
 
 <script lang="ts" setup>
   import { useEditorComStore } from '@/store/modules/editorCom'
-  import { useEventEmitter, useHover } from 'vue3-hooks-plus'
+  import { useHover } from 'vue3-hooks-plus'
   import { handleMove } from './utils'
   import ControlPoint from './ControlPoint.vue'
   import ReferLine from './refer-line.vue'
+  import { useContextMenu } from '@/hooks/useContextMenu'
 
   const editorComStore = useEditorComStore()
-  const event = useEventEmitter({ global: true })
+  const { showMenu } = useContextMenu()
   const instance = getCurrentInstance()
   const props = defineProps<{
     component: {
@@ -47,22 +52,15 @@
       locked: boolean
       hided: boolean
       hovered: boolean
-      componentId: string
+      id: string
     }
   }>()
-
-  event.useSubscription('select', (data: any) => {
-    const id = data?.params?.[0]?.componentId
-    if (id === props.component.componentId) editorComStore.setComponentSelect(props.component)
-    else editorComStore.cancelComponentSelect(props.component)
-  })
 
   const containScaleRef = ref()
   const mouseIsHover = useHover(containScaleRef)
 
   watch(mouseIsHover, (b) => {
-    if (b) editorComStore.setComponentHover(true, props.component.componentId)
-    else editorComStore.cancelComponentHover(false, props.component.componentId)
+    editorComStore.setComponentHover(b, props.component.id)
   })
 
   const isHover = computed(() => props.component.hovered)
@@ -101,7 +99,7 @@
     if (props.component.selected) {
       return
     }
-    event.emit('select', { componentId: props.component.componentId })
+    editorComStore.selectComponentActive(props.component.id)
   }
 
   const onMove = (e: MouseEvent) => {

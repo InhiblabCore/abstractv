@@ -203,6 +203,8 @@ export default function useRulerTool(options?: ComputedRef<RulerOption>) {
     const el = container.value
     const { direction, width, height, ratio } = rulerOptions.value
     if (el) {
+      console.log(el)
+
       const deltaW =
         direction === 'TB' ? Math.max(el.offsetWidth, width!) : Math.max(el.offsetHeight, width!)
       const deltaH = height
@@ -277,11 +279,11 @@ export default function useRulerTool(options?: ComputedRef<RulerOption>) {
   }
 
   useEventListener('mouseenter', constructIndicator, {
-    target: container,
+    target: canvas,
   })
 
   useEventListener('mousedown', createGuideLine, {
-    target: container,
+    target: canvas,
   })
 
   return { container, createArithmeticScale, setSize, setScale, toggleGuide, destroy, clearGuides }

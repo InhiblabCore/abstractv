@@ -1,0 +1,250 @@
+$panel-width: 200px;
+
+.layer-panel-wp {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  width: $panel-width !important;
+  height: 100%;
+  overflow: hidden;
+  background: var(--datav-layer-wp-bg);
+  border-right: var(--datav-border-dark);
+  transition: width 0.3s ease;
+  flex: none;
+  flex-direction: column;
+}
+
+.layer-manager {
+  z-index: 9;
+  display: flex;
+  width: $panel-width;
+  height: 100%;
+  overflow: hidden;
+  transition: 0.3s ease;
+  flex-direction: column;
+  flex: auto;
+}
+
+.layer-manager-top {
+  position: relative;
+  height: 30px;
+  line-height: 30px;
+  color: var(--abstractv-font-color);
+  text-indent: 10px;
+  background: var(--datav-layer-bg);
+  user-select: none;
+
+  .layer-num {
+    line-height: 30px;
+    vertical-align: middle;
+  }
+}
+
+.layer-layout {
+  position: absolute;
+  top: 0;
+  right: 1px;
+  letter-spacing: 4px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+
+  .btn-icon {
+    text-indent: 0;
+    cursor: pointer;
+    transition: color 0.2s;
+    width: 20px;
+    display: inline-block;
+
+    &:hover {
+      color: #fff;
+    }
+
+    &.selected {
+      color: var(--datav-main-color);
+    }
+  }
+}
+
+.layer-toolbar {
+  display: flex;
+  height: 32px;
+  padding: 0 18px;
+  background: var(--datav-layer-toolbar-bg);
+  align-items: center;
+  justify-content: center;
+  flex: none;
+
+  .toolbar-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 20px;
+    height: 20px;
+    color: var(--abstractv-font-color);
+    border-radius: 1px;
+    transition: background 0.2s;
+
+    &.enable:hover {
+      color: #fff;
+      cursor: pointer;
+      background: var(--datav-main-color) !important;
+    }
+
+    &.enable.checked {
+      color: #fff;
+      background: var(--datav-main-color) !important;
+    }
+
+    &.standard:not(.enable):hover {
+      cursor: pointer;
+      background: var(--datav-layer-toolbar-bg-hover);
+      opacity: 0.5 !important;
+    }
+  }
+}
+
+.layer-toolbar-top {
+  border-bottom: var(--datav-layer-toolbar-border);
+
+  .toolbar-icon {
+    margin: 0 9px;
+    background: var(--datav-layer-toolbar-icon-color);
+  }
+}
+
+.layer-toolbar-bottom {
+  border-top: var(--datav-layer-toolbar-border);
+
+  .toolbar-icon {
+    margin: 0 5px;
+    border: 1px solid transparent;
+  }
+}
+
+.layer-panel-wp.--hide {
+  width: 0 !important;
+
+  .layer-manager {
+    transform: translateX(-100%);
+  }
+}
+
+.layer-manager-wrap {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  font-size: 12px;
+  line-height: 2;
+  color: var(--abstractv-font-color);
+  list-style: none;
+  background: var(--datav-layer-wp-bg);
+  user-select: none;
+  flex: auto;
+  flex-direction: column;
+}
+
+.layer-manager-item {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 32px;
+  padding: 0 6px;
+  padding-left: 8px;
+  cursor: pointer;
+  background: var(--datav-layer-item-bg);
+  box-sizing: border-box;
+  transition: background 0.2s;
+  align-items: center;
+  flex: none;
+
+  &.thumbail-wrap {
+    height: 48px;
+  }
+
+  &.hided,
+  &.locked {
+    color: var(--datav-layer-item-color-locked);
+    background: var(--datav-layer-item-color-locked);
+  }
+
+  &.hovered {
+    color: #fff;
+    background: rgb(143 225 255 / 10%);
+  }
+
+  &.selected {
+    color: #fff;
+    background: var(--datav-main-color);
+  }
+
+  .layer-item-thumbail {
+    width: 53px;
+    height: 34px;
+    flex: none;
+    display: block;
+    border: var(--datav-border);
+    background: var(--datav-layer-item-thumbail-bg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+
+  .layer-manager-thumbail {
+    flex: auto;
+    width: 0;
+    margin-left: 6px;
+  }
+
+  .layer-item-span {
+    flex: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .layer-item-text {
+      flex: 0 1 auto;
+      text-indent: 7px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .layer-item-input {
+    width: 100%;
+    color: var(--abstractv-font-color);
+    padding: 0 4px;
+    height: 20px;
+    line-height: 20px;
+    background: 0 0;
+    border: none;
+    outline: 0;
+    font-size: 12px;
+    text-indent: 2px;
+
+    &:focus {
+      color: #fff;
+      background: var(--datav-layer-input-bg);
+    }
+  }
+
+  .layer-thumbail-item {
+    position: absolute;
+    top: 3px;
+    right: 4px;
+    line-height: 1;
+  }
+
+  .show-toggle-btn {
+    padding: 0 2px;
+  }
+}
+
+.last-flex-item {
+  flex: auto;
+  min-height: 40px;
+}

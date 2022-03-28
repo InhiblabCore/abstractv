@@ -37,12 +37,12 @@
   const canvasWidth = computed(() => editorComStore.getCanvasWidth)
 
   const cw = document.documentElement.clientWidth
-  const hWidth = Math.max(canvasWidth.value, cw)
+  const hWidth = computed(() => Math.max(canvasWidth.value, cw))
   const vHeight = computed(() => canvasHeight.value)
 
   const hOptions = computed(() => ({
     direction: 'TB',
-    width: hWidth,
+    width: hWidth.value,
     scale: scale.value,
   }))
 
@@ -67,7 +67,7 @@
 
   watchEffect(() => {
     if (hRulerWpRef.value) {
-      setHSize(hWidth, 20, scale.value)
+      setHSize(hWidth.value, 20, scale.value)
     } else {
       createArithmeticHScale()
     }
@@ -91,6 +91,22 @@
     toggleHGuide(visible)
     toggleVGuide(visible)
   }
+
+  const onScroll = (ev: Event) => {
+    const dom = ev.target as HTMLElement
+    hScroll.value = dom.scrollLeft
+    vScroll.value = dom.scrollTop
+  }
+
+  onMounted(() => {
+    const canvasWp = document.getElementById('canvas-wp')
+    canvasWp?.addEventListener('scroll', onScroll)
+  })
+
+  onUnmounted(() => {
+    const canvasWp = document.getElementById('canvas-wp')
+    canvasWp?.removeEventListener('scroll', onScroll)
+  })
 </script>
 
 <style lang="scss">
@@ -124,6 +140,10 @@
 
         .line-value {
           pointer-events: none;
+          color: #e6f7ff;
+          font-size: 12px;
+          font-weight: 400;
+          text-shadow: 0 0 10px #0270ff;
         }
       }
     }
@@ -214,7 +234,7 @@
       width: 20px;
       height: 20px;
       font-size: 16px;
-      color: var(--datav-font-color);
+      color: var(--abstractv-font-color);
       cursor: pointer;
       background: var(--datav-data-form-bgcolor);
       border-right: $line-border-3;

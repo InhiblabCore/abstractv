@@ -1,32 +1,34 @@
 <template>
   <div class="g-layout is-vertical edit-container">
     <div class="g-header text-white">
-      <Header />
+      <header-tool />
     </div>
     <div id="edit-main-wp" class="g-layout edit-main-wp">
+      <layer-area />
       <MaterialArea />
-      <!-- <layer-panel /> -->
-      <!-- <components-panel /> -->
       <!-- <filter-manager-drawer /> -->
       <div class="g-layout edit-main text-white">
         <!-- <toolbox-panel /> -->
         <g-loading :spinning="false">
-          <CanvasMain />
+          <canvas-main />
         </g-loading>
-        <Footer />
+        <footer-tool />
       </div>
-      <!-- <ConfigPanel /> -->
+      <config-tool />
     </div>
   </div>
+  <context-menu />
   <!-- <editor-context-menu /> -->
 </template>
 
 <script lang="ts" setup>
-  import Header from './Header/index.vue'
+  import HeaderTool from './HeaderTool/index.vue'
   import MaterialArea from './MaterialArea/index.vue'
-  // import ConfigPanel from './ConfigPanel/index.vue';
-  import Footer from './Footer/index.vue'
+  import ConfigTool from './ConfigTool/index.vue'
+  import LayerArea from './LayerArea/index.vue'
+  import FooterTool from './FooterTool/index.vue'
   import CanvasMain from './CanvasMain/index.vue'
+  import ContextMenu from './ContextMenu/index.vue'
 </script>
 
 <style scoped lang="scss">
