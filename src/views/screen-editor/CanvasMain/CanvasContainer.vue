@@ -68,11 +68,11 @@
   const scale = computed(() => editorComStore.getCanvasScale)
 
   const CanvasContainerStyle = computed(() => ({
-    top: 0,
-    left: 0,
+    top: `${props.component.attr.y}px`,
+    left: `${props.component.attr.x}px`,
     width: `${props.component.attr.w}px`,
     height: `${props.component.attr.h}px`,
-    transform: `translate(${props.component.attr.x}px, ${props.component.attr.y}px)`,
+    // transform: `translate(calc(${props.component.attr.x}px + 0.5px), calc(${props.component.attr.y}px + 0.5px))`,
   }))
 
   const canvasContainerClass = computed(() => ({
