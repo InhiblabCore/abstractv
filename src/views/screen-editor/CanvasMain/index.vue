@@ -4,13 +4,7 @@
       <div class="screen-shot" :style="screenStyle">
         <align-line />
         <ruler-tool />
-        <div
-          id="canvas-coms"
-          class="canvas-panel"
-          @dragover="dragOver"
-          @drop="dropToAddCom"
-          :style="canvasStyle"
-        >
+        <div id="canvas-coms" class="canvas-panel" ref="dropRef" :style="canvasStyle">
           <canvas-container
             v-for="component in componentsListDate"
             :key="component.id"
@@ -40,8 +34,11 @@
   import RulerTool from './RulerTool/index.vue'
   import AlignLine from './RulerTool/align-line.vue'
   import { AbstractvComponent } from '@/components/componentFactory'
+  import { useDrop } from 'vue3-hooks-plus'
 
   useCanvasScale()
+
+  const dropRef = ref(null)
   const editorComStore = useEditorComStore()
   const componentsListDate = computed(() => editorComStore.getComponentsListDate)
 
@@ -69,49 +66,48 @@
     } as CSSProperties
   })
 
-  const dropToAddCom = async (event: any) => {
-    event.preventDefault()
+  useDrop(dropRef, {
+    onDom: async (content: string, event: any) => {
+      event.preventDefault()
+      try {
+        const name = content.replace('V', '')
+        if (name) {
+          // ToolbarModule.addLoading();
+          // 创建一个组件
+          let component: AbstractvComponent = await createComponent(name)!
 
-    try {
-      const name = (event.dataTransfer.getData('text') as string).replace('V', '')
-      if (name) {
-        // ToolbarModule.addLoading();
-        // 创建一个组件
-        let component: AbstractvComponent = await createComponent(name)!
+          // 获取缩放
+          const scale = canvasScale.value
 
-        // 获取缩放
-        const scale = canvasScale.value
+          // X方向减去左边的工具宽度 加 画布间隙
+          const offsetX = (event.clientX - 384) / scale
 
-        // X方向减去左边的工具宽度 加 画布间隙
-        const offsetX = (event.clientX - 384) / scale
+          // y方向减去顶部的工具宽度 加 画布间隙
+          const offsetY = (event.clientY - 140) / scale
 
-        // y方向减去顶部的工具宽度 加 画布间隙
-        const offsetY = (event.clientY - 140) / scale
+          // 为了让元素中心点跟随鼠标，所以不能减去元素全宽高，需要除2
+          component.attr.x = Math.round(offsetX - component.attr.w / 2)
+          component.attr.y = Math.round(offsetY - component.attr.h / 2)
 
-        // 为了让元素中心点跟随鼠标，所以不能减去元素全宽高，需要除2
-        component.attr.x = Math.round(offsetX - component.attr.w / 2)
-        component.attr.y = Math.round(offsetY - component.attr.h / 2)
+          // 调整组件层级
+          // TODO 暂时不支持智能调整层级
+          component.attr.zIndex = editorComStore.getComponentZindex
 
-        // 调整组件层级
-        // TODO 暂时不支持智能调整层级
-        component.attr.zIndex = editorComStore.getComponentZindex
-
-        // 每次新增组件的时候选中该组件
-        editorComStore.addComponent(component)
-        editorComStore.selectComponentActive(component.id)
+          // 每次新增组件的时候选中该组件
+          editorComStore.addComponent(component)
+          editorComStore.selectComponentActive(component.id)
+        }
+      } catch {
+        // TODO
+        console.log('error')
       }
-    } catch {
-      // TODO
-      console.log('error')
-    }
-  }
-
-  // 拖拽结束
-  const dragOver = (ev: any) => {
-    ev.preventDefault()
-    ev.stopPropagation()
-    ev.dataTransfer.dropEffect = 'copy'
-  }
+    },
+    onDragOver: (ev: any) => {
+      ev.preventDefault()
+      ev.stopPropagation()
+      ev.dataTransfer.dropEffect = 'copy'
+    },
+  })
 
   // 点击背景取消选择组件，展示背景参数配置项
   const cancelSelectCom = () => {

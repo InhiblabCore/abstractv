@@ -203,8 +203,6 @@ export default function useRulerTool(options?: ComputedRef<RulerOption>) {
     const el = container.value
     const { direction, width, height, ratio } = rulerOptions.value
     if (el) {
-      console.log(el)
-
       const deltaW =
         direction === 'TB' ? Math.max(el.offsetWidth, width!) : Math.max(el.offsetHeight, width!)
       const deltaH = height

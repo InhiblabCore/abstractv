@@ -35,26 +35,12 @@
   import ControlPoint from './ControlPoint.vue'
   import ReferLine from './refer-line.vue'
   import { useContextMenu } from '@/hooks/useContextMenu'
+  import { AbstractvComponent } from '@/components/componentFactory'
 
   const editorComStore = useEditorComStore()
   const { showMenu } = useContextMenu()
   const instance = getCurrentInstance()
-  const props = defineProps<{
-    component: {
-      attr: {
-        w: number
-        h: number
-        x: number
-        y: number
-        deg: 0
-      }
-      selected: boolean
-      locked: boolean
-      hided: boolean
-      hovered: boolean
-      id: string
-    }
-  }>()
+  const props = defineProps<{ component: AbstractvComponent }>()
 
   const containScaleRef = ref()
   const mouseIsHover = useHover(containScaleRef)
@@ -72,8 +58,11 @@
     left: `${props.component.attr.x}px`,
     width: `${props.component.attr.w}px`,
     height: `${props.component.attr.h}px`,
+    opacity: props.component.attr.opacity,
     // transform: `translate(calc(${props.component.attr.x}px + 0.5px), calc(${props.component.attr.y}px + 0.5px))`,
   }))
+
+  console.log(props.component)
 
   const canvasContainerClass = computed(() => ({
     selected: props.component.selected,

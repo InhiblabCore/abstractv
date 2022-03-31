@@ -63,9 +63,6 @@
   const selectedComponent = computed(() => editorStore.getSelectComponent)
 
   provide('component', selectedComponent)
-  watch(selectedComponent, (c) => {
-    console.log(c)
-  })
 </script>
 
 <style scoped lang="scss">
