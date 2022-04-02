@@ -74,7 +74,7 @@
         if (name) {
           // ToolbarModule.addLoading();
           // 创建一个组件
-          let component: AbstractvComponent = await createComponent(name)!
+          const component: AbstractvComponent = await createComponent(name)!
 
           // 获取缩放
           const scale = canvasScale.value
@@ -91,7 +91,7 @@
 
           // 调整组件层级
           // TODO 暂时不支持智能调整层级
-          component.attr.zIndex = editorComStore.getComponentZindex
+          component.attr.zIndex = editorComStore.setComponentZindex
 
           // 每次新增组件的时候选中该组件
           editorComStore.addComponent(component)

@@ -230,6 +230,4 @@ export const handleZoom = (ev: MouseEvent, dir: Direction, component: any, scale
 
   document.addEventListener('mousemove', move)
   document.addEventListener('mouseup', up)
-
-  //   setAttr(ev, dir, com, scale, 0, mode)
 }

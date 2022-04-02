@@ -30,15 +30,33 @@ export const useToolStore = defineStore('tool', {
     }
   },
   getters: {
+    /**
+     * @description 获取图层工具是否显示
+     * @returns {*}  {boolean}
+     */
     getLayerShow(): boolean {
       return this.layer.show
     },
+
+    /**
+     * @description 获取组件工具是否显示
+     * @returns {*}  {boolean}
+     */
     getComponentsShow(): boolean {
       return this.components.show
     },
+
+    /**
+     * @description 获取加载是否显示
+     * @returns {*}  {boolean}
+     */
     getLoading(): number {
       return this.loading
     },
+    /**
+     * @description 获取配置工具是否显示
+     * @returns {*}  {boolean}
+     */
     getConfigShow(): boolean {
       return this.config.show
     },
