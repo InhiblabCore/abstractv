@@ -59,7 +59,11 @@
     width: `${props.component.attr.w}px`,
     height: `${props.component.attr.h}px`,
     opacity: props.component.attr.opacity,
-    // transform: `translate(calc(${props.component.attr.x}px + 0.5px), calc(${props.component.attr.y}px + 0.5px))`,
+    // transform: `matrix(${scale.value * Math.cos(props.component.attr.deg)},${
+    //   scale.value * Math.sin(props.component.attr.deg)
+    // },${-1 * scale.value * Math.sin(props.component.attr.deg)},${
+    //   scale.value * Math.cos(props.component.attr.deg)
+    // },${props.component.attr.x},${props.component.attr.y})`,
   }))
 
   console.log(props.component)
@@ -76,8 +80,8 @@
     hided: !props.component.selected || props.component.locked,
   }))
   const handlerStyle = computed(() => ({
-    cursor: 'move',
-    transform: `rotate(${props.component.attr.deg}deg)`,
+    // cursor: 'move',
+    // transform: `rotate(${props.component.attr.deg}deg)`,
   }))
   const wrapperStyle = computed(() => ({
     width: `${props.component.attr.w}px`,

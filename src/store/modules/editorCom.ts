@@ -33,6 +33,11 @@ type EditorType = {
     show: boolean
   }
   subComponents: AbstractvComponent[]
+  // componentActions: {
+  //   id: AbstractvComponent['id']
+  //   action: 'move' | 'create' | 'delete' | 'rotate' | 'zoom'
+  //   attr: AbstractvComponent['attr']
+  // }[]
 }
 
 export const useEditorComStore = defineStore('editor-com', {
@@ -40,6 +45,7 @@ export const useEditorComStore = defineStore('editor-com', {
     return {
       componentsListDate: [],
       subComponents: [],
+      // componentActions: [],
       canvas: {
         scale: 0.2,
         width: 1920,

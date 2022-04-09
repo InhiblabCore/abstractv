@@ -8,16 +8,34 @@
 <script lang="ts" setup>
   import { useDrag } from 'vue3-hooks-plus'
   const props = defineProps<{
-    component: {
-      name: string
-      alias: string
-      img: string
-      layer: string
-      used: boolean
-    }
+    component:
+      | {
+          name: string
+          alias: string
+          img: string
+          layer: string
+          used: boolean
+        }
+      | {
+          name: string
+          alias: string
+          img: string
+          thum: string
+          used: boolean
+          layer?: undefined
+        }
+      | {
+          name: string
+          alias: string
+          img: string
+          thum: string
+          used: boolean
+        }
   }>()
   const dragRef = ref(null)
   const { alias, used, name, img } = toRefs(props.component)
+
+  console.log(name.value)
 
   useDrag(name.value, dragRef, {
     draggable: used.value,

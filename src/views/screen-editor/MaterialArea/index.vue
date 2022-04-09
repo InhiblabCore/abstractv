@@ -16,7 +16,7 @@
               </n-tooltip>
             </template>
 
-            <el-tabs tab-position="left" class="el-tabs-l2">
+            <el-tabs v-if="cate.data.length > 1" tab-position="left" class="el-tabs-l2">
               <el-tab-pane v-for="subcate in cate.data" :key="subcate.type">
                 <template #label>
                   <span class="com-tab-title">{{ subcate.name }}</span>
@@ -45,6 +45,17 @@
                 </div>
               </el-tab-pane>
             </el-tabs>
+
+            <div v-else class="components-multi-menu">
+              <div class="components-single-menu --wider">
+                <ul class="components-single-menu-list">
+                  <MaterialItem v-for="com in cate.data[0].data" :key="com.name" :component="com" />
+                </ul>
+                <template v-if="cate.data[0].data.length === 0">
+                  <div v-if="cate.type === 'favorite'" class="favorite-empty">没有收藏组件</div>
+                </template>
+              </div>
+            </div>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -60,6 +71,8 @@
   import { visualizeListComponents } from '@/components/config/componentConfig'
 
   import MaterialItem from './MaterialItem.vue'
+
+  console.log(visualizeListComponents)
 
   // import { useDrag } from 'vue3-hooks-plus'
 
