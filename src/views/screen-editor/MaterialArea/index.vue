@@ -16,7 +16,7 @@
               </n-tooltip>
             </template>
 
-            <el-tabs tab-position="left" class="el-tabs-l2">
+            <el-tabs v-if="cate.data.length > 1" tab-position="left" class="el-tabs-l2">
               <el-tab-pane v-for="subcate in cate.data" :key="subcate.type">
                 <template #label>
                   <span class="com-tab-title">{{ subcate.name }}</span>
@@ -24,7 +24,8 @@
                 <div class="components-single-menu-wp">
                   <div class="components-single-menu">
                     <ul class="components-single-menu-list">
-                      <li
+                      <MaterialItem v-for="com in subcate.data" :key="com.name" :component="com" />
+                      <!-- <li
                         v-for="com in subcate.data"
                         :key="com.name"
                         :title="com.alias"
@@ -38,12 +39,23 @@
                           class="components-item-img"
                           :style="`background-image: url(${com.img});`"
                         ></div>
-                      </li>
+                      </li> -->
                     </ul>
                   </div>
                 </div>
               </el-tab-pane>
             </el-tabs>
+
+            <div v-else class="components-multi-menu">
+              <div class="components-single-menu --wider">
+                <ul class="components-single-menu-list">
+                  <MaterialItem v-for="com in cate.data[0].data" :key="com.name" :component="com" />
+                </ul>
+                <template v-if="cate.data[0].data.length === 0">
+                  <div v-if="cate.type === 'favorite'" class="favorite-empty">没有收藏组件</div>
+                </template>
+              </div>
+            </div>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -55,68 +67,18 @@
   import 'element-plus/es/components/tabs/style/css'
   import 'element-plus/es/components/tab-pane/style/css'
   import { ElTabs, ElTabPane } from 'element-plus'
-
-  //   import barCover from '@/assets/components/covers/bar.png'
-  //   import lineCover from '@/assets/components/covers/line.png'
   import { useToolStore } from '@/store/modules/tool'
   import { visualizeListComponents } from '@/components/config/componentConfig'
 
-  const dragRef = ref()
+  import MaterialItem from './MaterialItem.vue'
+
+  console.log(visualizeListComponents)
+
+  // import { useDrag } from 'vue3-hooks-plus'
 
   const toolStore = useToolStore()
 
   const visiblePanel = computed(() => toolStore.getComponentsShow)
-
-  //   const categories: any = [
-  //     {
-  //       type: 'chart',
-  //       name: '图表',
-  //       icon: 'v-icon-chart',
-  //       data: [
-  //         {
-  //           type: 'all',
-  //           name: '全部',
-  //           data: [
-  //             {
-  //               type: 'bar',
-  //               name: 'BasicBar',
-  //               alias: '柱状图',
-  //               used: true,
-  //               img: barCover,
-  //             },
-  //             {
-  //               type: 'line',
-  //               name: 'BasicLine',
-  //               alias: '折线图',
-  //               used: true,
-  //               img: lineCover,
-  //             },
-  //             {
-  //               type: 'title',
-  //               name: 'BasicTitle',
-  //               alias: '标题',
-  //               used: true,
-  //               img: '',
-  //             },
-  //           ],
-  //         },
-  //         {
-  //           type: 'bar',
-  //           name: '条状图',
-  //         },
-  //         {
-  //           type: 'lien',
-  //           name: '线图',
-  //         },
-  //       ],
-  //     },
-  //   ]
-
-  // dragStart($event, com.name)
-
-  const dragStart = (ev: any, comName: string) => {
-    ev.dataTransfer.setData('text', comName)
-  }
 </script>
 <style lang="scss">
   @import './style';

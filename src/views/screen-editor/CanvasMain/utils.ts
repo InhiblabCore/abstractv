@@ -135,6 +135,7 @@ export const handleRotate = (ev: MouseEvent, el: HTMLElement, com: any) => {
     (Math.atan2(centerY - ev.clientY, centerX - ev.clientX) * 180) / Math.PI - com.attr.deg
 
   const move = (e: MouseEvent) => {
+    // const rotateDegreeAfter = Math.atan2(e.clientY - centerY, e.clientX - centerX) / (Math.PI / 180)
     const angle =
       (Math.atan2(centerY - e.clientY, centerX - e.clientX) * 180) / Math.PI - startAngle
     const deg = Math.round(angle % 360)
@@ -229,6 +230,4 @@ export const handleZoom = (ev: MouseEvent, dir: Direction, component: any, scale
 
   document.addEventListener('mousemove', move)
   document.addEventListener('mouseup', up)
-
-  //   setAttr(ev, dir, com, scale, 0, mode)
 }

@@ -35,26 +35,12 @@
   import ControlPoint from './ControlPoint.vue'
   import ReferLine from './refer-line.vue'
   import { useContextMenu } from '@/hooks/useContextMenu'
+  import { AbstractvComponent } from '@/components/componentFactory'
 
   const editorComStore = useEditorComStore()
   const { showMenu } = useContextMenu()
   const instance = getCurrentInstance()
-  const props = defineProps<{
-    component: {
-      attr: {
-        w: number
-        h: number
-        x: number
-        y: number
-        deg: 0
-      }
-      selected: boolean
-      locked: boolean
-      hided: boolean
-      hovered: boolean
-      id: string
-    }
-  }>()
+  const props = defineProps<{ component: AbstractvComponent }>()
 
   const containScaleRef = ref()
   const mouseIsHover = useHover(containScaleRef)
@@ -68,12 +54,19 @@
   const scale = computed(() => editorComStore.getCanvasScale)
 
   const CanvasContainerStyle = computed(() => ({
-    top: 0,
-    left: 0,
+    top: `${props.component.attr.y}px`,
+    left: `${props.component.attr.x}px`,
     width: `${props.component.attr.w}px`,
     height: `${props.component.attr.h}px`,
-    transform: `translate(${props.component.attr.x}px, ${props.component.attr.y}px)`,
+    opacity: props.component.attr.opacity,
+    // transform: `matrix(${scale.value * Math.cos(props.component.attr.deg)},${
+    //   scale.value * Math.sin(props.component.attr.deg)
+    // },${-1 * scale.value * Math.sin(props.component.attr.deg)},${
+    //   scale.value * Math.cos(props.component.attr.deg)
+    // },${props.component.attr.x},${props.component.attr.y})`,
   }))
+
+  console.log(props.component)
 
   const canvasContainerClass = computed(() => ({
     selected: props.component.selected,
@@ -87,8 +80,8 @@
     hided: !props.component.selected || props.component.locked,
   }))
   const handlerStyle = computed(() => ({
-    cursor: 'move',
-    transform: `rotate(${props.component.attr.deg}deg)`,
+    // cursor: 'move',
+    // transform: `rotate(${props.component.attr.deg}deg)`,
   }))
   const wrapperStyle = computed(() => ({
     width: `${props.component.attr.w}px`,

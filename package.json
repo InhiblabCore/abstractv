@@ -43,7 +43,7 @@
     "vue-echarts": "^6.0.0",
     "vue-i18n": "^9.1.9",
     "vue-router": "4",
-    "vue3-hooks-plus": "^2.2.7",
+    "vue3-hooks-plus": "^2.2.8",
     "vuex": "^4.0.2"
   },
   "devDependencies": {

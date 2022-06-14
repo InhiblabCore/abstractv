@@ -91,7 +91,6 @@
     }
   })
 </script>
-
 <style lang="scss" scoped>
   .basic-setting-wp {
     user-select: none;
