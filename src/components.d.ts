@@ -7,6 +7,7 @@ declare module 'vue' {
     MaterialBarSrc: typeof import('./components/material/bar/src/index.vue')['default']
     MaterialBarSrcConfig: typeof import('./components/material/bar/src/config.vue')['default']
     MaterialLineSrc: typeof import('./components/material/line/src/index.vue')['default']
+    MaterialLineSrcConfig: typeof import('./components/material/line/src/config.vue')['default']
     UiColorPickerSrc: typeof import('./components/ui/color-picker/src/index.vue')['default']
     UiComIconSrc: typeof import('./components/ui/com-icon/src/index.vue')['default']
     UiFieldCollapseSrc: typeof import('./components/ui/field-collapse/src/index.vue')['default']

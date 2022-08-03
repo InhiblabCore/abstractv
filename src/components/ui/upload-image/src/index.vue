@@ -36,7 +36,7 @@
             @mouseleave="handleMouseLeave"
           >
             <div class="g-upload-image-content">
-              <img v-if="modelValue && !iserr" :src="modelValue" //>
+              <img v-if="modelValue && !iserr" :src="modelValue" />
               <div v-else class="g-upload-tip">
                 <n-icon size="60">
                   <IconImg />
@@ -60,13 +60,13 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, watch } from 'vue';
-  import { useMessage, UploadFileInfo } from 'naive-ui';
-  import { UPDATE_MODEL_EVENT } from '@/utils/constants';
-  import { generateId } from '@/utils/util';
-  import { uploadHost, previewHost, validAllowImg } from '@/utils/upload-util';
-  import { getTokenByEnv } from '@/api/qiniu';
-  import { IconLink, IconImg } from '@/icons';
+  import { defineComponent, ref, watch } from 'vue'
+  import { useMessage, UploadFileInfo } from 'naive-ui'
+  import { UPDATE_MODEL_EVENT } from '@/utils/constants'
+  import { generateId } from '@/utils/util'
+  import { uploadHost, previewHost, validAllowImg } from '@/utils/upload-util'
+  // import { getTokenByEnv } from '@/api/qiniu'
+  import { IconLink, IconImg } from '@/icons'
 
   export default defineComponent({
     name: 'GUploadImage',
@@ -106,85 +106,85 @@
     },
     emits: [UPDATE_MODEL_EVENT],
     setup(props, ctx) {
-      const nMessage = useMessage();
-      const loading = ref(false);
+      const nMessage = useMessage()
+      const loading = ref(false)
       const form = ref({
         key: '',
         token: '',
-      });
-      const iserr = ref(false);
-      const visibleCover = ref(false);
+      })
+      const iserr = ref(false)
+      const visibleCover = ref(false)
 
       const beforeUpload = async (options: { file: UploadFileInfo; event: Event }) => {
         const valid = validAllowImg(options.file.file, {
           allowType: props.allowType,
           allowSize: props.size,
-        });
+        })
 
         if (valid) {
-          nMessage.error(valid);
-          return false;
+          nMessage.error(valid)
+          return false
         }
 
         try {
-          loading.value = true;
-          form.value.token = await getTokenByEnv();
-          form.value.key = `upload/${generateId()}_${options.file.name}`;
-          return true;
+          loading.value = true
+          form.value.token = 'xxxx'
+          form.value.key = `upload/${generateId()}_${options.file.name}`
+          return true
         } catch (error) {
-          loading.value = false;
-          nMessage.error(error.toString());
+          loading.value = false
+          nMessage.error(error.toString())
         }
 
-        return false;
-      };
+        return false
+      }
 
       const finishUpload = (options: { file: UploadFileInfo; event: Event }) => {
-        loading.value = false;
+        loading.value = false
 
-        const res = JSON.parse((options.event.target as XMLHttpRequest).response);
+        const res = JSON.parse((options.event.target as XMLHttpRequest).response)
         if (res.error) {
-          nMessage.error(res.error);
+          nMessage.error(res.error)
         } else {
-          ctx.emit(UPDATE_MODEL_EVENT, `${props.previewHost}/${res.key}`);
+          ctx.emit(UPDATE_MODEL_EVENT, `${props.previewHost}/${res.key}`)
         }
-      };
+      }
 
       const handleInput = (value: string) => {
-        ctx.emit(UPDATE_MODEL_EVENT, value);
-      };
+        ctx.emit(UPDATE_MODEL_EVENT, value)
+      }
 
       const zoomImage = () => {
-        const img = new Image();
-        img.src = props.modelValue;
+        const img = new Image()
+        img.src = props.modelValue
         img.onload = () => {
-          iserr.value = false;
-        };
+          iserr.value = false
+        }
 
         img.onerror = () => {
-          iserr.value = true;
+          iserr.value = true
           if (props.modelValue) {
-            nMessage.error('图片加载失败');
+            nMessage.error('图片加载失败')
           }
-        };
-      };
+        }
+      }
 
       const handleMouseEnter = () => {
         if (props.modelValue) {
-          visibleCover.value = true;
+          visibleCover.value = true
         }
-      };
+      }
 
       const handleMouseLeave = () => {
-        visibleCover.value = false;
-      };
+        visibleCover.value = false
+      }
 
       const removeImage = () => {
-        handleInput('');
-        visibleCover.value = false;
-      };
+        handleInput('')
+        visibleCover.value = false
+      }
 
-      watch(() => props.modelValue, zoomImage);
+      watch(() => props.modelValue, zoomImage)
 
       return {
         loading,
@@ -197,7 +197,7 @@
         handleMouseEnter,
         handleMouseLeave,
         removeImage,
-      };
+      }
     },
-  });
+  })
 </script>

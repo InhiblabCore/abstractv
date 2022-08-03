@@ -66,8 +66,6 @@
     // },${props.component.attr.x},${props.component.attr.y})`,
   }))
 
-  console.log(props.component)
-
   const canvasContainerClass = computed(() => ({
     selected: props.component.selected,
     hided: props.component.hided,

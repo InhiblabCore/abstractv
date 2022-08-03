@@ -10,6 +10,7 @@ export default ({ command, mode }) => {
   const isBuild = command === 'build'
   return defineConfig({
     plugins: createVitePlugins(isBuild),
+    base: isBuild ? '/abstractv' : '',
     resolve: {
       alias: [
         { find: /^~/, replacement: '' },

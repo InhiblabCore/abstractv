@@ -80,6 +80,7 @@ export abstract class AbstractvComponent {
     this.alias = obj.component!.alias
     this.icon = obj.componentsCategory.icon
     this.img = obj.component!.img
+    // @ts-ignore
     this.layer = obj.component!.layer
 
     this.attr = { ...this.attr, ...attr }
