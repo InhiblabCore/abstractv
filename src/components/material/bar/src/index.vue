@@ -10,12 +10,26 @@
   import { GridComponent, TooltipComponent, LegendComponent } from 'echarts/components'
   import { use, graphic } from 'echarts/core'
   import { CanvasRenderer } from 'echarts/renderers'
+  import { useApiStore } from '@/store/modules/api'
+  import { getFieldMap } from '@/hooks/useDataCenter'
+  import groupBy from 'lodash-es/groupBy'
 
   use([CanvasRenderer, BarChart, GridComponent, TooltipComponent, LegendComponent])
 
   const props = defineProps<{
     component: any
   }>()
+
+  const apiStore = useApiStore()
+  // const { datavEmit } = useDataCenter(props.component)
+
+  const dv_data = computed(() => {
+    return apiStore.dataMap[props.component.id]?.source ?? []
+  })
+
+  const dv_field = computed(() => {
+    return getFieldMap(props.component.apis.source.fields)
+  })
 
   const config = toRef(props.component, 'config')
   const attr = toRef(props.component, 'attr')
@@ -27,12 +41,19 @@
     }
   })
 
+  const chartData = computed(() => {
+    const groups = groupBy(dv_data.value, (item) => item[dv_field.value.x])
+    return {
+      keys: Object.keys(groups),
+      values: Object.values(groups),
+    }
+  })
+
   const getSeries = () => {
     const { global, label, series } = config.value
-    console.log(config.value)
 
-    // const { values } = chartData.value
-    return series.map((item: any) => {
+    const { values } = chartData.value
+    return series.map((item: any, idx: string | number) => {
       return {
         type: item.type,
         name: item.name,
@@ -63,33 +84,13 @@
         backgroundStyle: {
           color: global.background.color,
         },
-        data: [
-          {
-            x: '1',
-            y: 100,
-            value: 100,
-          },
-          {
-            x: '2',
-            y: 300,
-            value: 80,
-          },
-          {
-            x: '3',
-            y: 300,
-            value: 40,
-          },
-          {
-            x: '4',
-            y: 300,
-            value: 80,
-          },
-          {
-            x: '5',
-            y: 300,
-            value: 80,
-          },
-        ],
+        data: values.map((v) => {
+          const obj = v[idx as number]
+          return {
+            value: obj ? obj[dv_field.value.y] : null,
+            dataRef: obj ?? {},
+          }
+        }),
       }
     })
   }

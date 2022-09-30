@@ -1,4 +1,11 @@
 import { AbstractvChartSeries, AbstractvComponent } from '@/components/componentFactory'
+import { createField } from '@/components/dataSource/data-field'
+import {
+  ApiConfigMap,
+  ApiDataConfigMap,
+  initApiConfig,
+  initApiData,
+} from '@/components/dataSource/data-source'
 
 export class BasicBarSeries extends AbstractvChartSeries {
   constructor(name: string) {
@@ -225,10 +232,8 @@ export class BasicBar extends AbstractvComponent {
     },
   }
 
-  // @ts-ignore
-  apis: Partial<any>
-  // @ts-ignore
-  apiData: Partial<any>
+  apis!: Partial<ApiConfigMap>
+  apiData!: Partial<ApiDataConfigMap>
   // @ts-ignore
   events: Record<string, any>
   // @ts-ignore
@@ -236,25 +241,22 @@ export class BasicBar extends AbstractvComponent {
 
   constructor() {
     super('BasicBar', { w: 500, h: 300 })
-
     this.initData()
   }
 
   initData() {
-    // const fields = [
-    //   createField('x', { description: '类目' }),
-    //   createField('y', { description: '值' }),
-    // ]
+    const fields = [
+      createField('x', { description: '类目' }),
+      createField('y', { description: '值' }),
+    ]
 
-    this.apis = {}
-    this.apiData = {}
     this.events = {}
-    // this.apis = initApiConfig({
-    //   fields: Object.assign({}, ...fields),
-    //   description: '基本柱状图接口',
-    // })
+    this.apis = initApiConfig({
+      fields: Object.assign({}, ...fields),
+      description: '基本柱状图接口',
+    })
 
-    // this.apiData = initApiData(this.id)
+    this.apiData = initApiData(this.id)
 
     // this.events = {
     //   click: {
@@ -271,7 +273,35 @@ export class BasicBar extends AbstractvComponent {
     try {
       //   const path = 'bar/basic-bar'
       //   const res = await getStaticData(this.id, path)
-      this.apiData.source.config.data = JSON.stringify({ name: 'bar' })
+      if (typeof this.apiData === 'object') {
+        this.apiData!.source!.config.data = JSON.stringify([
+          {
+            x: '1',
+            y: 100,
+            value: 100,
+          },
+          {
+            x: '2',
+            y: 300,
+            value: 80,
+          },
+          {
+            x: '3',
+            y: 300,
+            value: 40,
+          },
+          {
+            x: '4',
+            y: 300,
+            value: 80,
+          },
+          {
+            x: '5',
+            y: 700,
+            value: 80,
+          },
+        ])
+      }
     } catch (error) {
       throw error
     }

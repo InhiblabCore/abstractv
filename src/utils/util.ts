@@ -165,12 +165,14 @@ export function ArrayToObject<T extends string | Object>(
 ): Record<string, string> {
   if (key && value) {
     return arr.reduce((prev, curr) => {
+      // @ts-ignore
       prev[curr[key]] = curr[value]
       return prev
     }, {})
   }
 
   return (arr as string[]).reduce((prev, curr) => {
+    // @ts-ignore
     prev[curr] = curr
     return prev
   }, {})
@@ -251,7 +253,9 @@ export const calcStrWidth = (str: string, font: string) => {
     TextCanvas = document.createElement('canvas')
   }
   const ctx = TextCanvas.getContext('2d')
+  // @ts-ignore
   ctx.font = font
+  // @ts-ignore
   ctx.font
   return ctx.measureText(str).width
 }

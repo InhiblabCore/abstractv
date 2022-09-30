@@ -16,6 +16,7 @@ export type AlignLine = {
   show: boolean
 }
 type EditorType = {
+  editMode: boolean
   componentsListDate: AbstractvComponent[]
   minCanvasScale: number
   canvas: {
@@ -43,6 +44,7 @@ type EditorType = {
 export const useEditorComStore = defineStore('editor-com', {
   state: (): EditorType => {
     return {
+      editMode: false,
       componentsListDate: [],
       subComponents: [],
       // componentActions: [],
@@ -122,6 +124,13 @@ export const useEditorComStore = defineStore('editor-com', {
     },
   },
   actions: {
+    /**
+     * @description 修改模式
+     */
+    setEditMode() {
+      this.editMode = true
+    },
+
     /**
      * @description 添加组件
      * @param  {AbstractvComponent} component 组件实例

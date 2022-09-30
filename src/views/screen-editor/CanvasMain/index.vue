@@ -35,8 +35,11 @@
   import AlignLine from './RulerTool/align-line.vue'
   import { AbstractvComponent } from '@/components/componentFactory'
   import { useDrop } from 'vue3-hooks-plus'
+  import { useDebugStore } from '@/store/modules/debug'
 
   useCanvasScale()
+
+  const debugStore = useDebugStore()
 
   const dropRef = ref(null)
   const editorComStore = useEditorComStore()
@@ -93,9 +96,14 @@
           // TODO 暂时不支持智能调整层级
           component.attr.zIndex = editorComStore.setComponentZindex
 
+          // 加载图表数据
+          component.loadData()
+
           // 每次新增组件的时候选中该组件
           editorComStore.addComponent(component)
           editorComStore.selectComponentActive(component.id)
+
+          debugStore.enable()
         }
       } catch {
         // TODO

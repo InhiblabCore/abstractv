@@ -27,6 +27,7 @@ module.exports = defineConfig({
   rules: {
     'vue/script-setup-uses-vars': 'error',
     '@typescript-eslint/ban-ts-ignore': 'off',
+    'vue/no-mutating-props': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-var-requires': 'off',

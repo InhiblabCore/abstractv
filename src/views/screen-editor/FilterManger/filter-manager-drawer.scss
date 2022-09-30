@@ -1,0 +1,40 @@
+.filter-manager-drawer {
+  color: var(--datav-font-color);
+  user-select: none;
+
+  .filter-manager-title {
+    font-size: 18px;
+    color: #eee;
+
+    .create-filter {
+      margin-left: 10px;
+      cursor: pointer;
+      font-size: 12px;
+      color: var(--datav-main-color);
+    }
+
+    .filter-doc {
+      position: absolute;
+      right: 60px;
+      cursor: pointer;
+      color: var(--datav-main-color);
+      font-size: 12px;
+      line-height: 19px;
+    }
+  }
+
+  .panel-info {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .info-text {
+      max-width: 360px;
+      margin-bottom: 15px;
+      color: #eee;
+      font-size: 14px;
+    }
+  }
+}
