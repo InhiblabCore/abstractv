@@ -97,7 +97,7 @@
           component.attr.zIndex = editorComStore.setComponentZindex
 
           // 加载图表数据
-          component.loadData()
+          await component.loadData()
 
           // 每次新增组件的时候选中该组件
           editorComStore.addComponent(component)

@@ -32,6 +32,8 @@ export const useApiStore = defineStore('api', {
       const eventStore = useEventStore()
       const { type, config } = adConfig
       let res: unknown
+      console.log(type)
+
       if (type === ApiType.static) {
         res = config.data
       } else if (type === ApiType.api) {

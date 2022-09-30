@@ -11,7 +11,7 @@
   import { use, graphic } from 'echarts/core'
   import { CanvasRenderer } from 'echarts/renderers'
   import { useApiStore } from '@/store/modules/api'
-  import { getFieldMap } from '@/hooks/useDataCenter'
+  import { getFieldMap, useDataCenter } from '@/hooks/useDataCenter'
   import groupBy from 'lodash-es/groupBy'
 
   use([CanvasRenderer, BarChart, GridComponent, TooltipComponent, LegendComponent])
@@ -21,10 +21,14 @@
   }>()
 
   const apiStore = useApiStore()
-  // const { datavEmit } = useDataCenter(props.component)
+  useDataCenter(props.component)
 
   const dv_data = computed(() => {
     return apiStore.dataMap[props.component.id]?.source ?? []
+  })
+
+  watchEffect(() => {
+    console.log(dv_data.value)
   })
 
   const dv_field = computed(() => {
