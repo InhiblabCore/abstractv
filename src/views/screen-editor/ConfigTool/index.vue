@@ -28,7 +28,7 @@
               数据
             </n-tooltip>
           </template>
-          <!-- <data-center-panel :key="selectedComponent.id" /> -->
+          <data-center-tool :key="selectedComponent.id" />
         </n-tab-pane>
         <n-tab-pane name="interaction" display-directive="show:lazy">
           <template #tab>
@@ -55,6 +55,16 @@
 
   import PageConfig from './PageConfig.vue'
   import ComponentConfig from './ComponentConfig.vue'
+  // import second from './data-center-tool/index.vue'
+  import { loadAsyncComponent } from '@/utils/async-component'
+
+  const DataCenterTool = loadAsyncComponent(() => import('./DataCenterTool/index.vue'))
+
+  // const components = ref(new Map<string, any>())
+  // components.value.set(
+  //   'MyTag',
+  //   defineAsyncComponent(() => import('')),
+  // )
 
   const toolStore = useToolStore()
   const editorStore = useEditorComStore()

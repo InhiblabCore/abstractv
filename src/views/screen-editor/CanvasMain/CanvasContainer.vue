@@ -66,8 +66,6 @@
     // },${props.component.attr.x},${props.component.attr.y})`,
   }))
 
-  console.log(props.component)
-
   const canvasContainerClass = computed(() => ({
     selected: props.component.selected,
     hided: props.component.hided,
@@ -80,8 +78,8 @@
     hided: !props.component.selected || props.component.locked,
   }))
   const handlerStyle = computed(() => ({
-    // cursor: 'move',
-    // transform: `rotate(${props.component.attr.deg}deg)`,
+    cursor: 'move',
+    transform: `rotate(${props.component.attr.deg}deg)`,
   }))
   const wrapperStyle = computed(() => ({
     width: `${props.component.attr.w}px`,

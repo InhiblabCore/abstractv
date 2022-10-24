@@ -94,7 +94,7 @@ export const line = {
       alias: '基本折线图',
       img: basicLineImg,
       thum: basicLineLayerImg,
-      used: false,
+      used: true,
     },
   ],
 }

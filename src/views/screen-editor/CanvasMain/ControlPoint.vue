@@ -31,7 +31,6 @@
   }>()
 
   const cursor = computed(() => getCursors(props.component.attr.deg))
-  console.log(cursor.value)
 
   const scale = computed(() => props.scale)
   const points = computed<{

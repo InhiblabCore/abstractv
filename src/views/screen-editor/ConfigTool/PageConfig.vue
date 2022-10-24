@@ -121,7 +121,7 @@
   .upload-tip {
     color: var(--datav-gui-font-color-description);
     margin-top: 4px;
-    display: box;
+    display: flex;
     word-break: break-word;
     overflow: hidden;
     text-overflow: ellipsis;

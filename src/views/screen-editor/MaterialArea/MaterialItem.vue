@@ -35,8 +35,6 @@
   const dragRef = ref(null)
   const { alias, used, name, img } = toRefs(props.component)
 
-  console.log(name.value)
-
   useDrag(name.value, dragRef, {
     draggable: used.value,
   })

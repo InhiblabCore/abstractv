@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios'
 // import { routers } from '../routers';
 
+axios.defaults.withCredentials = true
 //post请求头
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
 
@@ -8,6 +9,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 // axios.defaults.timeout = 10_000;
 
 const axiosInstance = axios.create({
+  baseURL: 'http://127.0.0.1:7001/',
   timeout: 10000,
 })
 
